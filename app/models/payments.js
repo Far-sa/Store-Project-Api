@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
 
-const Schema = new mongoose.Schema({})
+const PaymentSchema = new mongoose.Schema({})
 
-module.exports = mongoose.model('', BlogSchema)
+module.exports = mongoose.model('Payment', PaymentSchema)
