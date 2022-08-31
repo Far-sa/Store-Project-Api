@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
+const createError = require('http-errors')
 const path = require('path')
 
 module.exports = class Application {
@@ -50,17 +51,17 @@ module.exports = class Application {
 
   errorHandler () {
     this.#app.use((req, res, next) => {
-      return res.status(404).json({
-        statusCode: 404,
-        message: 'Page you are looking for does not exist'
-      })
+      next(createError.NotFound('Page you are looking for not found'))
     })
     this.#app.use((error, req, res, next) => {
-      const statusCode = error.status || 500
-      const message = error.message || 'Internal Server error occurred'
+      const serverError = createError.InternalServerError()
+      const statusCode = error.status || serverError.status
+      const message = error.message || serverError.message
       return res.status(statusCode).json({
-        statusCode,
-        message
+        errors: {
+          statusCode,
+          message
+        }
       })
     })
   }
