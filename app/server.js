@@ -38,7 +38,9 @@ module.exports = class Application {
   }
 
   configMiddleware () {}
-  createRoutes () {}
+  createRoutes () {
+    this.#app.use(require('./routes/router'))
+  }
 
   errorHandler () {
     this.#app.use((req, res, next) => {
