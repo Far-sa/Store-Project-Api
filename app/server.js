@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const morgan = require('morgan')
 const path = require('path')
 
 module.exports = class Application {
@@ -18,6 +19,7 @@ module.exports = class Application {
   }
 
   configureApplication () {
+    this.#app.use(morgan('dev'))
     this.#app.use(express.json())
     this.#app.use(express.urlencoded({ extended: true }))
     this.#app.use(express.static(path.join(__dirname, '..', 'public')))
@@ -26,7 +28,11 @@ module.exports = class Application {
   connectDatabase () {
     mongoose.connect(this.#DB_URI, error => {
       if (!error) return console.log('Connected to MongoDB')
-      return console.log('Database Connection Failed')
+      return console.log(error.message)
+    })
+    process.on('SIGINT', async () => {
+      await mongoose.connection.close()
+      process.exit(0)
     })
   }
 
@@ -44,7 +50,7 @@ module.exports = class Application {
 
   errorHandler () {
     this.#app.use((req, res, next) => {
-      return res.status(400).json({
+      return res.status(404).json({
         statusCode: 404,
         message: 'Page you are looking for does not exist'
       })
