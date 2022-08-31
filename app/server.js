@@ -52,7 +52,7 @@ module.exports = class Application {
               }
             ]
           },
-          apis: ['./routes/router.js']
+          apis: ['./app/routes/**/*.js']
         }),
         { explorer: true }
       )

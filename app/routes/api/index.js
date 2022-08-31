@@ -13,6 +13,8 @@ const router = express.Router()
  *     responses :
  *            200:
  *                 description : success
+ *            404 :
+ *                 description : failure
  */
 
 router.get('/', homeController.indexPage)
