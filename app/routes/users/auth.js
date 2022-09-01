@@ -19,11 +19,11 @@ router.post('/register')
  * @swagger
  *  /user/get-otp:
  *       post:
- *           summary: Login User
+ *           summary: Get OTP Code
  *           tags: [User Authentication]
- *           description: Login a user with OTP password
+ *           description: Login a user with OTP
  *           parameters:
- *           -    name : Mobile
+ *           -    name : mobile
  *                description: fa-IRI Numbers
  *                in : formData
  *                required : true
@@ -49,7 +49,7 @@ router.post('/get-otp', UserAuthController.getOTP)
  *           tags: [User Authentication]
  *           description: Check OTP with mobile number
  *           parameters:
- *           -    name : Mobile
+ *           -    name : mobile
  *                description: fa-IRI Numbers
  *                in : formData
  *                required : true
