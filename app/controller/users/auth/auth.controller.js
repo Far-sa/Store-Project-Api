@@ -9,7 +9,7 @@ const {
   randomNumberGenerator,
   signAccessToken
 } = require('../../../utils/functions')
-const { EXPIRES_IN } = require('../../../utils/constants')
+const { EXPIRES_IN, USER_ROLE } = require('../../../utils/constants')
 const Controller = require('../../controller')
 
 class UserAuthController extends Controller {
@@ -18,7 +18,7 @@ class UserAuthController extends Controller {
       await getOtpSchema.validateAsync(req.body)
       const { mobile } = req.body
       const code = randomNumberGenerator()
-      const result = this.saveUser(mobile, code)
+      const result = await this.saveUser(mobile, code)
       if (!result) throw createHttpError.Unauthorized('Login failed')
       res.status(200).json({
         data: {
@@ -37,16 +37,18 @@ class UserAuthController extends Controller {
     try {
       await checkOtpSchema.validateAsync(req.body)
       const { mobile, code } = req.body
+      console.log(req.body)
       const user = await User.findOne({ mobile })
       if (!user) throw createHttpError.NotFound('User not found')
-      if (user.otp.code !== code)
+      if (user.otp.code != code)
         throw createHttpError.Unauthorized('you sent a wrong code')
 
       const now = Date.now()
       if (+user.otp.expiresIn < now)
         throw createHttpError.Unauthorized('You code has been expired')
       //TODO create access token
-      const accessToken = await signAccessToken(user._id)
+
+      const accessToken = await signAccessToken({ payload: user._id })
       return res.json({
         data: {
           accessToken
@@ -73,7 +75,7 @@ class UserAuthController extends Controller {
     return !!(await User.create({
       mobile,
       otp,
-      roles: ['USER_ROLE']
+      roles: [USER_ROLE]
     }))
   }
 
