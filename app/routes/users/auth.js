@@ -17,7 +17,7 @@ router.post('/register')
 
 /**
  * @swagger
- *  /user/login:
+ *  /user/get-otp:
  *       post:
  *           summary: Login User
  *           tags: [User Authentication]
@@ -39,6 +39,36 @@ router.post('/register')
  *                    description : InternalServerError
  */
 
-router.post('/login', UserAuthController.login)
+router.post('/get-otp', UserAuthController.getOTP)
+
+/**
+ * @swagger
+ *  /user/check-otp:
+ *       post:
+ *           summary: Check OTP Value
+ *           tags: [User Authentication]
+ *           description: Check OTP with mobile number
+ *           parameters:
+ *           -    name : Mobile
+ *                description: fa-IRI Numbers
+ *                in : formData
+ *                required : true
+ *                type: string
+ *           -    name : code
+ *                description: Enter code
+ *                in : formData
+ *                required : true
+ *                type: string
+ *           responses:
+ *                201:
+ *                    description : Success
+ *                400:
+ *                    description : BadRequest
+ *                401:
+ *                    description : Unauthorized
+ *                500:
+ *                    description : InternalServerError
+ */
+router.post('/check-otp', UserAuthController.checkOtp)
 
 module.exports = router
