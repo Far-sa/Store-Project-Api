@@ -1,17 +1,18 @@
 const createHttpError = require('http-errors')
 
+const User = require('../../../models/users')
 const {
   getOtpSchema,
   checkOtpSchema
 } = require('../../../validation/user/authValidation')
-const User = require('../../../models/users')
 const {
   randomNumberGenerator,
-  signAccessToken
+  signAccessToken,
+  verifyRefreshToken,
+  signRefreshToken
 } = require('../../../utils/functions')
 const { EXPIRES_IN, USER_ROLE } = require('../../../utils/constants')
 const Controller = require('../../controller')
-const users = require('../../../models/users')
 
 class UserAuthController extends Controller {
   async getOTP (req, res, next) {
@@ -38,8 +39,8 @@ class UserAuthController extends Controller {
     try {
       await checkOtpSchema.validateAsync(req.body)
       const { mobile, code } = req.body
-      console.log(req.body)
       const user = await User.findOne({ mobile })
+
       if (!user) throw createHttpError.NotFound('User not found')
       if (user.otp.code != code)
         throw createHttpError.Unauthorized('you sent a wrong code')
@@ -48,10 +49,13 @@ class UserAuthController extends Controller {
       if (+user.otp.expiresIn < now)
         throw createHttpError.Unauthorized('You code has been expired')
 
-      const accessToken = signAccessToken({ payload: user.mobile })
+      const accessToken = await signAccessToken(user._id)
+      const refreshToken = await signRefreshToken(user._id)
       return res.json({
         data: {
-          accessToken
+          accessToken,
+          refreshToken,
+          user
         }
       })
     } catch (err) {
@@ -59,6 +63,23 @@ class UserAuthController extends Controller {
     }
   }
 
+  async refreshToken (req, res, next) {
+    try {
+      const { refreshToken } = req.body
+      const mobile = await verifyRefreshToken(refreshToken)
+      const user = User.findOne({ mobile })
+      const accessToken = await signAccessToken(user._id)
+      const newRefreshToken = await signRefreshToken(user._id)
+      return res.json({
+        data: {
+          accessToken,
+          refreshToken: newRefreshToken
+        }
+      })
+    } catch (err) {
+      next(err)
+    }
+  }
   async checkUserExist (mobile) {
     const user = await User.findOne({ mobile })
     return !!user

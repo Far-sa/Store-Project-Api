@@ -4,10 +4,6 @@ const {
   UserAuthController
 } = require('../../controller/users/auth/auth.controller')
 
-//@ Desc Register
-//@ Route POST /user/register
-router.post('/register')
-
 /**
  * @swagger
  *   tags:
@@ -70,5 +66,30 @@ router.post('/get-otp', UserAuthController.getOTP)
  *                    description : InternalServerError
  */
 router.post('/check-otp', UserAuthController.checkOtp)
+
+/**
+ * @swagger
+ *   /user/refresh-token:
+ *       post:
+ *           summary: Send Refresh Token
+ *           tags: [User Authentication]
+ *           description: Refresh Token
+ *           parameters:
+ *           -    name : refreshToken
+ *                description: Enter code
+ *                in : body
+ *                required : true
+ *                type: string
+ *           responses:
+ *                201:
+ *                    description : Success
+ *                400:
+ *                    description : BadRequest
+ *                401:
+ *                    description : Unauthorized
+ *                500:
+ *                    description : InternalServerError
+ */
+router.post('/refresh-token', UserAuthController.refreshToken)
 
 module.exports = router
