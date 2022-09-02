@@ -19,6 +19,7 @@ exports.authenticated = async (req, res, next) => {
       }
 
     const payload = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY)
+
     const user = await User.findOne(payload, { _id: 0, otp: 0, bills: 0 })
     //console.log(user)
     if (!user)
