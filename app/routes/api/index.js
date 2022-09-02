@@ -1,6 +1,7 @@
 const express = require('express')
 
 const homeController = require('../../controller/api/home.controller')
+const { authenticated } = require('../../middleware/authenticate')
 
 const router = express.Router()
 /**
@@ -17,6 +18,10 @@ const router = express.Router()
  *     summary : Index Routes
  *     tags : [Index Page]
  *     description : get all data in index route
+ *     parameters :
+ *      -          in : header
+ *                 name : access-token
+ *                 example : Bearer Token
  *     responses :
  *            200:
  *                 description : success
@@ -24,6 +29,6 @@ const router = express.Router()
  *                 description : failure
  */
 
-router.get('/', homeController.indexPage)
+router.get('/', authenticated, homeController.indexPage)
 
 module.exports = router

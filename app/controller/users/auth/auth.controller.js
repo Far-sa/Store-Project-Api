@@ -11,6 +11,7 @@ const {
 } = require('../../../utils/functions')
 const { EXPIRES_IN, USER_ROLE } = require('../../../utils/constants')
 const Controller = require('../../controller')
+const users = require('../../../models/users')
 
 class UserAuthController extends Controller {
   async getOTP (req, res, next) {
@@ -46,9 +47,8 @@ class UserAuthController extends Controller {
       const now = Date.now()
       if (+user.otp.expiresIn < now)
         throw createHttpError.Unauthorized('You code has been expired')
-      //TODO create access token
 
-      const accessToken = await signAccessToken({ payload: user._id })
+      const accessToken = signAccessToken({ payload: user.mobile })
       return res.json({
         data: {
           accessToken
