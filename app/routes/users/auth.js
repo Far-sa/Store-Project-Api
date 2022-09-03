@@ -3,6 +3,7 @@ const router = require('express').Router()
 const {
   UserAuthController
 } = require('../../controller/users/auth/auth.controller')
+const { setHeaders } = require('../../middleware/Cors')
 
 /**
  * @swagger
@@ -35,7 +36,7 @@ const {
  *                    description : InternalServerError
  */
 
-router.post('/get-otp', UserAuthController.getOTP)
+router.post('/get-otp', setHeaders, UserAuthController.getOTP)
 
 /**
  * @swagger
@@ -65,7 +66,7 @@ router.post('/get-otp', UserAuthController.getOTP)
  *                500:
  *                    description : InternalServerError
  */
-router.post('/check-otp', UserAuthController.checkOtp)
+router.post('/check-otp', setHeaders, UserAuthController.checkOtp)
 
 /**
  * @swagger
@@ -77,7 +78,7 @@ router.post('/check-otp', UserAuthController.checkOtp)
  *           parameters:
  *           -    name : refreshToken
  *                description: Enter code
- *                in : body
+ *                in : formData
  *                required : true
  *                type: string
  *           responses:

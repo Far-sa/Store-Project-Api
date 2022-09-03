@@ -2,6 +2,7 @@ const createHttpError = require('http-errors')
 const jwt = require('jsonwebtoken')
 
 const User = require('../models/users')
+const redisClient = require('./redis')
 
 exports.randomNumberGenerator = () => {
   return Math.floor(Math.random() * 90000 + 10000)
@@ -22,14 +23,15 @@ exports.signRefreshToken = userId => {
   return new Promise(async (resolve, reject) => {
     const user = await User.findById(userId)
     const payload = { mobile: user.mobile }
-    console.log('first', payload)
 
     jwt.sign(
       payload,
       process.env.REFRESH_TOKEN_SECRET_KEY,
       { expiresIn: '1y' },
-      (error, token) => {
-        if (error) reject(createHttpError.InternalServerError('Server Error'))
+      async (err, token) => {
+        if (err) reject(createHttpError.InternalServerError('Server Error'))
+
+        await redisClient.SETEX('userId', 31536000, token)
         resolve(token)
       }
     )
@@ -52,7 +54,11 @@ exports.verifyRefreshToken = async token => {
 
     const user = await User.findOne({ mobile }, { password: 0, otp: 0 })
     if (!user) throw createHttpError.NotFound('User not found')
-    return mobile
+    const refreshToken = await redisClient.get(user._id)
+    if (token === refreshToken) return mobile
+    throw createHttpError.Unauthorized(
+      'Your entrance was not successfully approved'
+    )
   } catch (err) {
     console.log(err)
   }

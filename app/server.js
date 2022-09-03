@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const morgan = require('morgan')
 const createError = require('http-errors')
 const path = require('path')
+const cors = require('cors')
 const swaggerUi = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
 
@@ -23,6 +24,7 @@ module.exports = class Application {
   }
 
   configureApplication () {
+    this.#app.use(cors())
     this.#app.use(morgan('dev'))
     this.#app.use(express.json())
     this.#app.use(express.urlencoded({ extended: true }))
