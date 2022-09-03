@@ -15,6 +15,7 @@ module.exports = class Application {
     this.#PORT = PORT
     this.#DB_URI = DB_URI
     this.configureApplication()
+    this.initRedis()
     this.connectDatabase()
     this.createServer()
     this.createRoutes()
@@ -69,7 +70,9 @@ module.exports = class Application {
       process.exit(0)
     })
   }
-
+  initRedis () {
+    require('./utils/redis')
+  }
   createServer () {
     const http = require('http')
     http.createServer(this.#app).listen(this.#PORT, () => {
