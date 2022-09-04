@@ -12,6 +12,7 @@ const router = express.Router()
 
 router.use('/user', require('./users/auth'))
 router.use('/developer', require('./developer.routes'))
+router.use('/admin', require('./admin/admin.routes'))
 router.use('/', require('./api/index'))
 
 module.exports = router
