@@ -1,4 +1,9 @@
 module.exports = {
   EXPIRES_IN: new Date().getTime() + 120000,
-  USER_ROLE: 'USER'
+  ROLES: {
+    USER: 'USER',
+    ADMIN: 'ADMIN',
+    TEACHER: 'TEACHER',
+    SUPPLIER: 'SUPPLIER'
+  }
 }
