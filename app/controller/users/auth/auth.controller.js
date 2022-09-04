@@ -67,7 +67,8 @@ class UserAuthController extends Controller {
     try {
       const { refreshToken } = req.body
       const mobile = await verifyRefreshToken(refreshToken)
-      const user = User.findOne({ mobile })
+      const user = await User.findOne({ mobile })
+      console.log('userId is:', user._id)
       const accessToken = await signAccessToken(user._id)
       const newRefreshToken = await signRefreshToken(user._id)
       return res.json({
@@ -77,6 +78,7 @@ class UserAuthController extends Controller {
         }
       })
     } catch (err) {
+      console.log(err.message)
       next(err)
     }
   }

@@ -22,7 +22,9 @@ exports.signAccessToken = async userId => {
 exports.signRefreshToken = userId => {
   return new Promise(async (resolve, reject) => {
     const user = await User.findById(userId)
+
     const payload = { mobile: user.mobile }
+    console.log('payload is:', payload)
 
     jwt.sign(
       payload,
@@ -31,7 +33,7 @@ exports.signRefreshToken = userId => {
       async (err, token) => {
         if (err) reject(createHttpError.InternalServerError('Server Error'))
 
-        await redisClient.SETEX('userId', 31536000, token)
+        //await redisClient.SETEX('userId', 31536000, token)
         resolve(token)
       }
     )
@@ -51,15 +53,20 @@ exports.verifyRefreshToken = async token => {
     const result = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET_KEY)
     if (!result) throw createHttpError.Unauthorized('Please Login ')
     const { mobile } = result || {}
-
+    //console.log('result:', mobile)
     const user = await User.findOne({ mobile }, { password: 0, otp: 0 })
     if (!user) throw createHttpError.NotFound('User not found')
-    const refreshToken = await redisClient.get(user._id)
-    if (token === refreshToken) return mobile
-    throw createHttpError.Unauthorized(
-      'Your entrance was not successfully approved'
-    )
+    console.log('user:', user)
+    const userId = user._id
+
+    // const refreshToken = await redisClient.get('userId')
+    // if (token === refreshToken) return mobile
+    // throw createHttpError.Unauthorized(
+    //   'Your entrance was not successfully approved'
+    // )
+
+    return user.mobile
   } catch (err) {
-    console.log(err)
+    console.log(err.message)
   }
 }
