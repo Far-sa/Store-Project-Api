@@ -5,7 +5,7 @@ const createHttpError = require('http-errors')
 const {
   addCategorySchema
 } = require('../../validation/admin/categoryValidation')
-const { result } = require('@hapi/joi/lib/base')
+const { result, $_validate } = require('@hapi/joi/lib/base')
 
 class CategoryController extends Controller {
   async addCategory (req, res, next) {
@@ -53,13 +53,33 @@ class CategoryController extends Controller {
   async getAllCategory (req, res, next) {
     try {
       //* search for data => local = foreign then push result to another filed like as
+      // const category = await Category.aggregate([
+      //   {
+      //     $lookup: {
+      //       from: 'categories',
+      //       as: 'children',
+      //       localField: '_id',
+      //       foreignField: 'parent'
+      //     }
+      //   },
+      //   {
+      //     $project: {
+      //       __V: 0,
+      //       'children.parent': 0,
+      //       'children.__V': 0
+      //     }
+      //   }
+      // ])
       const category = await Category.aggregate([
         {
-          $lookup: {
+          $graphLookup: {
             from: 'categories',
-            as: 'children',
-            localField: '_id',
-            foreignField: 'parent'
+            startWith: '$_id',
+            connectFromField: '_id',
+            connectToField: 'parent',
+            maxDepth: 5,
+            depthField: 'depth',
+            as: 'children'
           }
         },
         {
@@ -67,6 +87,11 @@ class CategoryController extends Controller {
             __V: 0,
             'children.parent': 0,
             'children.__V': 0
+          }
+        },
+        {
+          $match: {
+            parent: undefined
           }
         }
       ])
