@@ -50,9 +50,12 @@ class CategoryController extends Controller {
           }
         }
       ])
-      clg
+
       return res.status(200).json({
-        data: category
+        data: {
+          statusCode: 200,
+          category
+        }
       })
     } catch (err) {
       next(err)
@@ -78,15 +81,15 @@ class CategoryController extends Controller {
   }
   async getParentsChild (req, res, next) {
     try {
-      console.log(req.params)
       const { parent } = req.params
-      const children = await Category.find({ parent }, { __v: 0, parent: 0 })
-      result.status(200).json({
+      const children = await Category.find({ parent })
+      return res.status(200).json({
         data: {
           children
         }
       })
     } catch (err) {
+      console.log(err.message)
       next(err)
     }
   }

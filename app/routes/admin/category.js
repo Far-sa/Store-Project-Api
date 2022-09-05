@@ -19,7 +19,6 @@ const {
  *                 in : formData
  *                 type : string
  *                 required : false
-clear
  *          responses:
  *                    200:
  *                    description: success
@@ -41,17 +40,17 @@ router.get('/parents', CategoryController.getAllParents)
 /**
  * @swagger
  *  /admin/category/children/{parent}:
- *     get:
- *        tags : [Admin-Panel]
- *        summary : Get Parents's Child
- *        parameters :
- *            -      in : path
- *                   name : Child of parent
- *                   type : string
- *                   required : true
- *        responses :
- *                   200:
- *                   description : success
+ *      get:
+ *          tags: [Admin-Panel]
+ *          summary: get All children of Parents Category
+ *          parameters:
+ *              -   in: path
+ *                  name: parent
+ *                  type: string
+ *                  required: true
+ *          responses:
+ *              200:
+ *                  description: success
  */
 router.get('/children/:parent', CategoryController.getParentsChild)
 
@@ -62,7 +61,7 @@ router.get('/children/:parent', CategoryController.getParentsChild)
  *        tags : [Admin-Panel]
  *        summary : Get All Categories
  *        responses :
- *                   200:
+ *                 200:
  *                   description : success
  */
 router.get('/list', CategoryController.getAllCategory)

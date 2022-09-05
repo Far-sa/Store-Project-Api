@@ -1,8 +1,8 @@
-const mongoose = require('mongoose')
+const { default: mongoose } = require('mongoose')
 
 const CategorySchema = new mongoose.Schema({
   title: { type: String, required: true },
-  parent: { type: mongoose.Types.ObjectId, default: undefined }
+  parent: { type: mongoose.Types.ObjectId, ref: 'category', default: undefined }
 })
 
 module.exports = mongoose.model('Category', CategorySchema)
