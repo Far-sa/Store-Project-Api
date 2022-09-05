@@ -74,39 +74,43 @@ class CategoryController extends Controller {
       //     }
       //   }
       // ])
-      const category = await Category.aggregate([
-        {
-          $graphLookup: {
-            from: 'categories',
-            startWith: '$_id',
-            connectFromField: '_id',
-            connectToField: 'parent',
-            maxDepth: 5,
-            depthField: 'depth',
-            as: 'children'
-          }
-        },
-        {
-          $project: {
-            __V: 0,
-            'children.parent': 0,
-            'children.__V': 0
-          }
-        },
-        {
-          $match: {
-            parent: undefined
-          }
-        }
-      ])
+
+      //* use graphLookup in aggregate
+      // const categories = await Category.aggregate([
+      //   {
+      //     $graphLookup: {
+      //       from: 'categories',
+      //       startWith: '$_id',
+      //       connectFromField: '_id',
+      //       connectToField: 'parent',
+      //       maxDepth: 5,
+      //       depthField: 'depth',
+      //       as: 'children'
+      //     }
+      //   },
+      //   {
+      //     $project: {
+      //       __V: 0,
+      //       'children.parent': 0,
+      //       'children.__V': 0
+      //     }
+      //   },
+      //   {
+      //     $match: {
+      //       parent: undefined
+      //     }
+      //   }
+      // ])
+      const categories = await Category.find({ parent: undefined })
 
       return res.status(200).json({
         data: {
           statusCode: 200,
-          category
+          categories
         }
       })
     } catch (err) {
+      console.log(err.message)
       next(err)
     }
   }

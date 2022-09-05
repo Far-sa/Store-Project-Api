@@ -1,9 +1,34 @@
-const { default: mongoose } = require('mongoose')
+const mongoose = require('mongoose')
 
-const CategorySchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  parent: { type: mongoose.Types.ObjectId, ref: 'category', default: undefined }
+const CategorySchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    parent: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Category',
+      default: undefined
+    }
+  },
+  {
+    id: false,
+    toJSON: {
+      virtuals: true
+    }
+  }
+)
+
+CategorySchema.virtual('children', {
+  ref: 'Category',
+  localField: '_id',
+  foreignField: 'parent'
 })
+
+function autoPopulate (next) {
+  this.populate([{ path: 'children', select: { __v: 0 } }])
+  next()
+}
+
+CategorySchema.pre('findOne', autoPopulate).pre('find', autoPopulate)
 
 module.exports = mongoose.model('Category', CategorySchema)
 
