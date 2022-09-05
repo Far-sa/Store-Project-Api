@@ -1,4 +1,5 @@
 const Controller = require('../controller')
+const mongoose = require('mongoose')
 
 const Category = require('../../models/category')
 const createHttpError = require('http-errors')
@@ -31,7 +32,10 @@ class CategoryController extends Controller {
       const { id } = req.params
       const category = await Category.findOne({ _id: id })
       if (!category) throw createHttpError.NotFound('category not found')
-      const result = await Category.deleteOne({ _id: category.id })
+      const result = await Category.deleteMany({
+        $or: [{ _id: category._id }, { parent: category._id }]
+      })
+
       if (result.deletedCount == 0)
         throw createHttpError.InternalServerError('Server Error')
       return res.status(200).json({
@@ -108,6 +112,35 @@ class CategoryController extends Controller {
   }
   async getCategoryById (req, res, next) {
     try {
+      const { id } = req.params
+      const category = await Category.aggregate([
+        {
+          $match: {
+            _id: mongoose.Types.ObjectId(id)
+          }
+        },
+        {
+          $lookup: {
+            from: 'categories',
+            localField: '_id',
+            foreignField: 'parent',
+            as: 'children'
+          }
+        },
+        {
+          $project: {
+            __V: 0,
+            'children.parent': 0,
+            'children.__V': 0
+          }
+        }
+      ])
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          category
+        }
+      })
     } catch (err) {
       next(err)
     }

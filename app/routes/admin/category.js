@@ -83,4 +83,20 @@ router.get('/list', CategoryController.getAllCategory)
  */
 router.delete('/remove/:id', CategoryController.removeCategory)
 
+/**
+ * @swagger
+ *  /admin/category/{id}:
+ *      get:
+ *          tags: [Admin-Panel]
+ *          summary: find category with object-id
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  type: string
+ *                  required : true
+ *          responses:
+ *              200:
+ *                  description: success
+ */
+router.get('/:id', CategoryController.getCategoryById)
 module.exports = router
