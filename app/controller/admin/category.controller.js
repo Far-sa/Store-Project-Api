@@ -28,6 +28,18 @@ class CategoryController extends Controller {
   }
   async removeCategory (req, res, next) {
     try {
+      const { id } = req.params
+      const category = await Category.findOne({ _id: id })
+      if (!category) throw createHttpError.NotFound('category not found')
+      const result = await Category.deleteOne({ _id: category.id })
+      if (result.deletedCount == 0)
+        throw createHttpError.InternalServerError('Server Error')
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          message: 'Category deleted successfully'
+        }
+      })
     } catch (err) {
       next(err)
     }
@@ -40,6 +52,7 @@ class CategoryController extends Controller {
   }
   async getAllCategory (req, res, next) {
     try {
+      //* search for data => local = foreign then push result to another filed like as
       const category = await Category.aggregate([
         {
           $lookup: {
@@ -47,6 +60,13 @@ class CategoryController extends Controller {
             as: 'children',
             localField: '_id',
             foreignField: 'parent'
+          }
+        },
+        {
+          $project: {
+            __V: 0,
+            'children.parent': 0,
+            'children.__V': 0
           }
         }
       ])
