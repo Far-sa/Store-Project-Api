@@ -5,6 +5,7 @@ const createHttpError = require('http-errors')
 const {
   addCategorySchema
 } = require('../../validation/admin/categoryValidation')
+const { result } = require('@hapi/joi/lib/base')
 
 class CategoryController extends Controller {
   async addCategory (req, res, next) {
@@ -21,6 +22,7 @@ class CategoryController extends Controller {
         }
       })
     } catch (err) {
+      console.log(err.message)
       next(err)
     }
   }
@@ -38,6 +40,20 @@ class CategoryController extends Controller {
   }
   async getAllCategory (req, res, next) {
     try {
+      const category = await Category.aggregate([
+        {
+          $lookup: {
+            from: 'categories',
+            as: 'children',
+            localField: '_id',
+            foreignField: 'parent'
+          }
+        }
+      ])
+      clg
+      return res.status(200).json({
+        data: category
+      })
     } catch (err) {
       next(err)
     }
@@ -50,12 +66,26 @@ class CategoryController extends Controller {
   }
   async getAllParents (req, res, next) {
     try {
+      const parents = await Category.find({ parent: undefined }, { __v: 0 })
+      res.status(200).json({
+        data: {
+          parents
+        }
+      })
     } catch (err) {
       next(err)
     }
   }
-  async getCategoriesChild (req, res, next) {
+  async getParentsChild (req, res, next) {
     try {
+      console.log(req.params)
+      const { parent } = req.params
+      const children = await Category.find({ parent }, { __v: 0, parent: 0 })
+      result.status(200).json({
+        data: {
+          children
+        }
+      })
     } catch (err) {
       next(err)
     }

@@ -11,5 +11,9 @@ exports.addCategorySchema = Joi.object({
     .allow('')
     .pattern(MongoIDPattern)
     .allow('')
-    .error(createHttpError.BadRequest('Please enter a valid parent id'))
+    .error(createHttpError.BadRequest('Please enter a valid parent id')),
+  children: Joi.string()
+    .allow('')
+    .allow('')
+    .error(createHttpError.BadRequest('Please enter a valid Child name'))
 })
