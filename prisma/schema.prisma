@@ -9,3 +9,12 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model blog {
+  id   Int   @id  @default(autoincrement())
+  title String @unique
+  text String 
+  short_text String
+  createdAt DateTime @default(now())
+  
+}
