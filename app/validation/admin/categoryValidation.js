@@ -17,3 +17,10 @@ exports.addCategorySchema = Joi.object({
     .allow('')
     .error(createHttpError.BadRequest('Please enter a valid Child name'))
 })
+
+exports.updateCategorySchema = Joi.object({
+  title: Joi.string()
+    .min(3)
+    .max(30)
+    .error(createHttpError.BadRequest('category title is not valid'))
+})
