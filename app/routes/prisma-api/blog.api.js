@@ -1,5 +1,7 @@
-const router = require('express').Router()
-const prisma = new (require('@prisma/client').PrismaClient())()
+const express = require('express')
+const prisma = require('@prisma/client')
+
+const router = express.Router()
 
 /**
  * @swagger
@@ -25,3 +27,5 @@ router.get('/list', async (req, res, next) => {
     next(err)
   }
 })
+
+module.exports = router
