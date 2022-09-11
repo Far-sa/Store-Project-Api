@@ -18,3 +18,17 @@ model blog {
   createdAt DateTime @default(now())
   
 }
+model category {
+  id Int @id @default(autoincrement())
+  name String @unique @db.VarChar(50)
+  blogs blog[]
+}
+
+model users {
+  id          Int       @id @default(autoincrement())
+  user_name   String?   @db.VarChar(50)
+  age         Int?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bio     String?   @db.VarChar(255)
+}
