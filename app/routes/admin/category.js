@@ -99,4 +99,5 @@ router.delete('/remove/:id', CategoryController.removeCategory)
  *                  description: success
  */
 router.get('/:id', CategoryController.getCategoryById)
+
 module.exports = router
