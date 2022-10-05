@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 
 const commentSchema = new mongoose.Schema({
-  user: { type: mongoose.Types.ObjectId, required: true },
-  parent: { type: mongoose.Types.ObjectId, required: true },
+  user: { type: mongoose.Types.ObjectId, ref: 'users', required: true },
+  parent: { type: mongoose.Types.ObjectId, required: true }, // response
   comment: { type: String, required: true },
   createdAt: { type: Date, default: new Date().now() }
 })
@@ -15,11 +15,11 @@ const BlogSchema = new mongoose.Schema(
     text: { type: String, required: true },
     image: { type: String, required: true },
     tags: { type: [String], default: [] },
-    category: { type: mongoose.Types.ObjectId, required: true },
+    category: { type: [mongoose.Types.ObjectId], required: true },
     comments: { type: [commentSchema], default: [] },
-    like: { type: [mongoose.Types.ObjectId], default: [] },
-    dislike: { type: [mongoose.Types.ObjectId], default: [] },
-    bookmark: { type: [mongoose.Types.ObjectId], default: [] }
+    like: { type: [mongoose.Types.ObjectId], ref: 'users', default: [] },
+    dislike: { type: [mongoose.Types.ObjectId], ref: 'users', default: [] },
+    bookmark: { type: [mongoose.Types.ObjectId], ref: 'users', default: [] }
   },
   { timestamps: true, versionKey: false }
 )
