@@ -6,7 +6,7 @@ exports.createBlogSchema = Joi.object({
   title: Joi.string()
     .min(3)
     .max(30)
-    .error(createError.BadRequest('Category title is invalid')),
+    .error(createHttpError.BadRequest('Category title is invalid')),
   text: Joi.string().error(createHttpError.BadRequest('Enter a valid text')),
   short_text: Joi.string().error(
     createHttpError.BadRequest('Enter a Valid Text')

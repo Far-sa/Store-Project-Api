@@ -1,11 +1,13 @@
+const { createBlogSchema } = require('../../validation/admin/blogValidation')
 const Controller = require('../controller')
 
 class BlogController extends Controller {
   async createBlog (req, res, next) {
     try {
+      const blogDataBody = await createBlogSchema.validateAsync(req.body)
       return res.status(201).json({
         data: {
-          statusCode: 201
+          blogDataBody
         }
       })
     } catch (err) {
