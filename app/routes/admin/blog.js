@@ -30,7 +30,7 @@ router.get('/', BlogController.getBlogs)
  *          parameters :
  *              -   in : header
  *                  name : access-token
- *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTM2MjQ4OTAzMCIsImlhdCI6MTY2NTMyMzcxOSwiZXhwIjoxNjY1NDEwMTE5fQ.-9mgoKYP-a_UopsnJlDeq16W7YtIH3IDKcVOrFUaIAk
+ *                  value : Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTM2MjQ4OTAzMCIsImlhdCI6MTY2NTMyMzcxOSwiZXhwIjoxNjY1NDEwMTE5fQ.-9mgoKYP-a_UopsnJlDeq16W7YtIH3IDKcVOrFUaIAk
  *                  sample : Bearer <Token>
  *                  required : true
  *                  type : string
