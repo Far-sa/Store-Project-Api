@@ -2,6 +2,7 @@ const express = require('express')
 
 const { BlogController } = require('../../controller/admin/blog.controller')
 const { stringToArray } = require('../../middleware/stringToArray')
+const { verifyAccessToken } = require('../../utils/functions')
 const { uploadFile } = require('../../utils/multer')
 
 const router = express.Router()
@@ -27,6 +28,12 @@ router.get('/', BlogController.getBlogs)
  *          consumer :
  *              - multipart/form-data
  *          parameters :
+ *              -   in : header
+ *                  name : access-token
+ *                  value : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiIwOTM2MjQ4OTAzMCIsImlhdCI6MTY2NTMyMzcxOSwiZXhwIjoxNjY1NDEwMTE5fQ.-9mgoKYP-a_UopsnJlDeq16W7YtIH3IDKcVOrFUaIAk
+ *                  sample : Bearer <Token>
+ *                  required : true
+ *                  type : string
  *              -   in : formData
  *                  name : title
  *                  required : true
@@ -57,6 +64,7 @@ router.get('/', BlogController.getBlogs)
  */
 router.post(
   '/add',
+  verifyAccessToken,
   uploadFile.single('image'),
   stringToArray('tags'),
   BlogController.createBlog

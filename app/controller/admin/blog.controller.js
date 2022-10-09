@@ -16,27 +16,69 @@ class BlogController extends Controller {
       )
       const { title, text, short_text, tags, category } = blogDataBody
       const image = req.body.image
+      const author = req.user._id
       const blog = await Blog.create({
         title,
         text,
         image,
         short_text,
         tags,
-        category
+        category,
+        author
       })
-      return res.status(201).json({ blog })
+      return res.status(201).json({
+        data: {
+          statusCode: 201,
+          message: 'Blog has been created successfully'
+        }
+      })
     } catch (err) {
       //? for deleting image file for any reason
-      deleteFileInAddress(req.body.image)
+      deleteFileInAddress(image)
       next(err)
     }
   }
   async getBlogs (req, res, next) {
     try {
+      const blogs = await Blog.aggregate([
+        { $match: {} },
+        {
+          $lookup: {
+            from: 'users',
+            foreignField: '_id',
+            localField: 'author',
+            as: 'author'
+          }
+        },
+        {
+          $unwind: '$author'
+        },
+        {
+          $lookup: {
+            from: 'categories',
+            foreignField: '_id',
+            localField: 'category',
+            as: 'category'
+          }
+        },
+        {
+          $unwind: '$category'
+        },
+        {
+          $project: {
+            'author.__v': 0,
+            'category.__v': 0,
+            'author.otp': 0,
+            'author.Roles': 0,
+            'author.discount': 0,
+            'author.bills': 0
+          }
+        }
+      ])
       return res.status(200).json({
-        statusCode: 200,
         data: {
-          blogs: []
+          statusCode: 200,
+          blogs
         }
       })
     } catch (err) {

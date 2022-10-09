@@ -41,14 +41,28 @@ exports.signRefreshToken = userId => {
   })
 }
 
-exports.verifyAccessToken = token => {
-  const result = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY, {
-    expiresIn: '24h'
-  })
-  if (!result.mobile)
-    throw createHttpError.Unauthorized('Please enter to your Account')
-  return result
+exports.verifyAccessToken = (req, res, next) => {
+  const headers = req.headers
+  const [bearer, token] = headers?.['access-token']?.split(' ') || []
+  if (token && ['Bearer', 'bearer'].includes(bearer)) {
+    jwt.verify(
+      token,
+      process.env.ACCESS_TOKEN_SECRET_KEY,
+      async (err, payload) => {
+        if (err)
+          return next(createHttpError.Unauthorized('Please Log in First!'))
+
+        const { mobile } = payload || {}
+        const user = await User.findOne({ mobile }, { password: 0, otp: 0 })
+        if (!user)
+          return next(createHttpError.Unauthorized('Account was not found'))
+        req.user = user
+        return next()
+      }
+    )
+  } else return next(createHttpError.Unauthorized('Please Login'))
 }
+
 exports.verifyRefreshToken = async token => {
   try {
     const result = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET_KEY)
@@ -74,6 +88,8 @@ exports.verifyRefreshToken = async token => {
 }
 
 exports.deleteFileInAddress = fileAddress => {
-  const pathFile = path.join(__dirname, '..', '..', 'public', fileAddress)
-  fs.unlinkSync(pathFile)
+  if (fileAddress) {
+    const pathFile = path.join(__dirname, '..', '..', 'public', fileAddress)
+    if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile)
+  }
 }

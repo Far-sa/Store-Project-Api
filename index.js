@@ -3,4 +3,4 @@ const dotenv = require('dotenv')
 
 dotenv.config()
 
-new Application(process.env.PORT, process.env.MONGO_URI)
+new Application(process.env.PORT, process.env.MONGO_URII)

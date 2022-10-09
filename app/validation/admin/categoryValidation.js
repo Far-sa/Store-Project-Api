@@ -5,7 +5,7 @@ const { MongoIDPattern } = require('../../utils/constants')
 exports.addCategorySchema = Joi.object({
   title: Joi.string()
     .min(3)
-    .max(10)
+    .max(20)
     .error(createHttpError.BadRequest('Please enter a valid title')),
   parent: Joi.string()
     .allow('')
