@@ -1,5 +1,7 @@
 const createHttpError = require('http-errors')
 const jwt = require('jsonwebtoken')
+const fs = require('fs')
+const path = require('path')
 
 const User = require('../models/users')
 const redisClient = require('./redis')
@@ -69,4 +71,9 @@ exports.verifyRefreshToken = async token => {
   } catch (err) {
     console.log(err.message)
   }
+}
+
+exports.deleteFileInAddress = fileAddress => {
+  const pathFile = path.join(__dirname, '..', '..', 'public', fileAddress)
+  fs.unlinkSync(pathFile)
 }

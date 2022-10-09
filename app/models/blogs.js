@@ -4,7 +4,7 @@ const commentSchema = new mongoose.Schema({
   user: { type: mongoose.Types.ObjectId, ref: 'users', required: true },
   parent: { type: mongoose.Types.ObjectId, required: true }, // response
   comment: { type: String, required: true },
-  createdAt: { type: Date, default: new Date().now() }
+  createdAt: { type: Date, default: new Date().getTime() }
 })
 
 const BlogSchema = new mongoose.Schema(
