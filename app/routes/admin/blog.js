@@ -104,4 +104,53 @@ router.get('/:id', BlogController.getBlogById)
  */
 router.delete('/:id', BlogController.getBlogById)
 
+/**
+ * @swagger
+ *   /admin/blogs/update/{id}:
+ *       patch :
+ *          tags: [Blogs(AdminPanel)]
+ *          summary : Update a blog document By ID
+ *          consumer :
+ *              - multipart/form-data
+ *          parameters :
+ *              -   in : header
+ *                  name : access-token
+ *                  sample : Bearer <Token>
+ *                  type : string
+ *                  required : true
+ *              -   in : formData
+ *                  name : title
+ *                  type : string
+ *              -   in : path
+ *                  name : id
+ *                  required : true
+ *                  type : string
+ *              -   in : formData
+ *                  name : text
+ *                  type : string
+ *              -   in : formData
+ *                  name : short_text
+ *                  type : string
+ *              -   in : formData
+ *                  name : image
+ *                  type : file
+ *              -   in : formData
+ *                  name : tags
+ *                  example : tag1#tag2#tag3_foo# || undefined
+ *                  type : string
+ *              -   in : formData
+ *                  name : category
+ *                  type : string
+ *          responses :
+ *                 201:
+ *                   description : Created
+ */
+router.patch(
+  '/update/:id',
+  verifyAccessToken,
+  uploadFile.single('image'),
+  stringToArray('tags'),
+  BlogController.updateBlogById
+)
+
 module.exports = router

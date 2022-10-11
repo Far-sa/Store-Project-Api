@@ -107,7 +107,44 @@ class BlogController extends Controller {
   }
   async updateBlogById (req, res, next) {
     try {
+      const { id } = req.params
+      const findBlog = await Blog.findOne({ _id: id })
+      if (!findBlog) throw createHttpError.NotFound('Blog not found')
+
+      if (req?.body?.fileUploadPath && req?.body?.filename) {
+        req.body.image = path.join(req.body.fileUploadPath, req.body.filename)
+      }
+      const author = req.user._id
+      const data = req.body
+
+      let blackListFields = [
+        'likes',
+        'dislikes',
+        'author',
+        'bookmarks',
+        'comments'
+      ]
+      let nullishData = ['', ' ', '0', 0, null, undefined, NaN]
+
+      Object.keys(data).forEach(key => {
+        if (blackListFields.includes(data[key])) delete data[key]
+        if (typeof data == 'string') data[key] = data[key].trim()
+        if (Array.isArray(data[key]) && Array.length > 0)
+          data[key] = data[key].map(item => item.trim())
+        if (nullishData.includes(data[key])) delete data[key]
+      })
+      const result = await Blog.updateOne({ _id: id }, { $set: data })
+      if (result.modifiedCount == 0)
+        throw createHttpError.InternalServerError('Update process failed')
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          message: 'update process was done successfully'
+        }
+      })
     } catch (err) {
+      deleteFileInAddress(req?.body?.image)
+      console.log(err.message)
       next(err)
     }
   }
