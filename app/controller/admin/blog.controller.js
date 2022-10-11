@@ -3,6 +3,7 @@ const Controller = require('../controller')
 const path = require('path')
 const Blog = require('../../models/blogs')
 const { deleteFileInAddress } = require('../../utils/functions')
+const createHttpError = require('http-errors')
 
 class BlogController extends Controller {
   async createBlog (req, res, next) {
@@ -87,6 +88,19 @@ class BlogController extends Controller {
   }
   async deleteBlogById (req, res, next) {
     try {
+      const { id } = req.params
+      const blog = await Blog.findOne({ _id: id })
+      if (!blog) throw createHttpError.NotFound('Blog not found!')
+
+      const result = await Blog.deleteOne({ _id: id })
+      if (result.deletedCount == 0)
+        throw createHttpError.InternalServerError('deleting process failed')
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          message: 'Blog has been deleted'
+        }
+      })
     } catch (err) {
       next(err)
     }
@@ -99,6 +113,22 @@ class BlogController extends Controller {
   }
   async getBlogById (req, res, next) {
     try {
+      const { id } = req.params
+      // const path = await Blog.findOne({ _id: id }).getPopulatedPaths()
+      // console.log(path)
+      const blog = await Blog.findOne({ _id: id })
+      // .populate([
+      //   { path: 'Category', model: 'Category' },
+      //   { path: 'author', model: 'User' }
+      // ])
+
+      if (!blog) throw createHttpError.NotFound('Blog not found!')
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          blog
+        }
+      })
     } catch (err) {
       next(err)
     }
