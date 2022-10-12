@@ -13,6 +13,12 @@ const router = express.Router()
  *       get :
  *          tags: [Blogs(AdminPanel)]
  *          summary : Get list of blogs
+ *          parameters :
+ *              -   in : header
+ *                  name : access-token
+ *                  sample : Bearer <Token>
+ *                  required : true
+ *                  type : string
  *          responses :
  *                 200:
  *                   description : success

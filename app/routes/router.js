@@ -1,4 +1,5 @@
 const express = require('express')
+const { verifyAccessToken, checkRole } = require('../utils/functions')
 const redisClient = require('../utils/redis')
 
 const router = express.Router()
@@ -11,7 +12,12 @@ const router = express.Router()
 })()
 
 router.use('/user', require('./users/auth'))
-router.use('/admin', require('./admin/admin.routes'))
+router.use(
+  '/admin',
+  verifyAccessToken,
+  checkRole('ADMIN'),
+  require('./admin/admin.routes')
+)
 router.use('/developer', require('./developer.routes'))
 router.use('/blogs', require('./prisma-api/blog.api'))
 router.use('/', require('./api/index'))

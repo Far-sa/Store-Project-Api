@@ -4,44 +4,65 @@ const {
   CategoryController
 } = require('../../controller/admin/category.controller')
 
+//? Create Schema
 /**
  * @swagger
- *   /admin/category/add:
+ *  components:
+ *      schemas:
+ *          Category:
+ *              type: object
+ *              required:
+ *                  -   title
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                      description: the title of category
+ *                  parent:
+ *                      type: string
+ *                      description: the title of category
+ */
+
+//? Post Category
+/**
+ * @swagger
+ *  /admin/category/add:
  *      post:
- *          tags: [Admin-Panel]
- *          summary : Create a new category
- *          parameters:
- *            -    name : title
- *                 in : formData
- *                 type : string
- *                 required : true
- *            -    name : parent
- *                 in : formData
- *                 type : string
- *                 required : false
+ *          tags: [Category(AdminPanel)]
+ *          summary: create new category title
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Category'
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Category'
  *          responses:
- *                    200:
- *                    description: success
- *
+ *              201:
+ *                  description: success
  */
 router.post('/add', CategoryController.addCategory)
+
+//? Get Parent
 /**
  * @swagger
- *   /admin/category/parents:
+ *  /admin/category/parents:
  *      get:
- *          tags: [Admin-Panel]
- *          summary : Get Parents List
- *          responses :
- *                  200:
- *                    description: success
+ *          tags: [Category(AdminPanel)]
+ *          summary: get All parents of Category or Category Heads
+ *          responses:
+ *              200:
+ *                  description: success
  */
 router.get('/parents', CategoryController.getAllParents)
 
+//? Get children
 /**
  * @swagger
  *  /admin/category/children/{parent}:
  *      get:
- *          tags: [Admin-Panel]
+ *          tags: [Category(AdminPanel)]
  *          summary: get All children of Parents Category
  *          parameters:
  *              -   in: path
@@ -54,23 +75,25 @@ router.get('/parents', CategoryController.getAllParents)
  */
 router.get('/children/:parent', CategoryController.getParentsChild)
 
+//? Get List
 /**
  * @swagger
- *  /admin/category/list:
- *     get:
- *        tags : [Admin-Panel]
- *        summary : Get All Categories
- *        responses :
- *                 200:
- *                   description : success
+ *  /admin/category/all:
+ *      get:
+ *          tags: [Category(AdminPanel)]
+ *          summary: get All Categories
+ *          responses:
+ *              200:
+ *                  description: success
  */
 router.get('/list', CategoryController.getAllCategory)
 
+//? Delete Category
 /**
  * @swagger
  *  /admin/category/remove/{id}:
  *      delete:
- *          tags: [Admin-Panel]
+ *          tags: [Category(AdminPanel)]
  *          summary: remove category with object-id
  *          parameters:
  *              -   in: path
@@ -83,12 +106,13 @@ router.get('/list', CategoryController.getAllCategory)
  */
 router.delete('/remove/:id', CategoryController.removeCategory)
 
+//? Get
 /**
  * @swagger
  *  /admin/category/{id}:
  *      get:
- *          tags: [Admin-Panel]
- *          summary: find category with object-id
+ *          tags: [Category(AdminPanel)]
+ *          summary: find category by object-id
  *          parameters:
  *              -   in: path
  *                  name: id

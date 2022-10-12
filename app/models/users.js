@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema(
     bills: { type: [], default: [] },
     discount: { type: Number, default: 0 },
     birthday: { type: String },
-    Role: { type: String, default: 'USER' }
+    Roles: { type: [String], default: 'USER' }
   },
   {
     timestamps: true,

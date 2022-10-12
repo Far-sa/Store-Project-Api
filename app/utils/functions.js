@@ -41,26 +41,46 @@ exports.signRefreshToken = userId => {
   })
 }
 
-exports.verifyAccessToken = (req, res, next) => {
-  const headers = req.headers
+function getToken (headers) {
   const [bearer, token] = headers?.['access-token']?.split(' ') || []
-  if (token && ['Bearer', 'bearer'].includes(bearer)) {
+  if (token && ['Bearer', 'bearer'].includes(bearer)) return token
+  throw createHttpError.Unauthorized('Please Login to Your Account!')
+}
+
+exports.verifyAccessToken = async (req, res, next) => {
+  try {
+    const token = getToken(req.headers)
     jwt.verify(
       token,
       process.env.ACCESS_TOKEN_SECRET_KEY,
       async (err, payload) => {
-        if (err)
-          return next(createHttpError.Unauthorized('Please Log in First!'))
-
+        //? check if decodedToken is Ok!
+        if (err) throw createHttpError.BadRequest('Authorization failed')
         const { mobile } = payload || {}
-        const user = await User.findOne({ mobile }, { password: 0, otp: 0 })
-        if (!user)
-          return next(createHttpError.Unauthorized('Account was not found'))
+        const user = await User.findOne(
+          { mobile },
+          { password: 0, otp: 0, bills: 0, discount: 0 }
+        )
+        if (!user) throw createHttpError.Unauthorized('Account was not found')
         req.user = user
         return next()
       }
     )
-  } else return next(createHttpError.Unauthorized('Please Login'))
+  } catch (err) {
+    next(err)
+  }
+}
+
+exports.checkRole = role => {
+  return (req, res, next) => {
+    try {
+      const user = req.user
+      if (user.Roles.includes(role)) return next()
+      throw createHttpError.Forbidden('You do not have access to this section')
+    } catch (err) {
+      next(err)
+    }
+  }
 }
 
 exports.verifyRefreshToken = async token => {
