@@ -13,12 +13,6 @@ const router = express.Router()
  *       get :
  *          tags: [Blogs(AdminPanel)]
  *          summary : Get list of blogs
- *          parameters :
- *              -   in : header
- *                  name : access-token
- *                  sample : Bearer <Token>
- *                  required : true
- *                  type : string
  *          responses :
  *                 200:
  *                   description : success
@@ -34,11 +28,6 @@ router.get('/', BlogController.getBlogs)
  *          consumer :
  *              - multipart/form-data
  *          parameters :
- *              -   in : header
- *                  name : access-token
- *                  sample : Bearer <Token>
- *                  required : true
- *                  type : string
  *              -   in : formData
  *                  name : title
  *                  required : true
@@ -69,7 +58,6 @@ router.get('/', BlogController.getBlogs)
  */
 router.post(
   '/add',
-  verifyAccessToken,
   uploadFile.single('image'),
   stringToArray('tags'),
   BlogController.createBlog
@@ -119,11 +107,6 @@ router.delete('/:id', BlogController.getBlogById)
  *          consumer :
  *              - multipart/form-data
  *          parameters :
- *              -   in : header
- *                  name : access-token
- *                  sample : Bearer <Token>
- *                  type : string
- *                  required : true
  *              -   in : formData
  *                  name : title
  *                  type : string

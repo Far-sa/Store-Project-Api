@@ -42,7 +42,7 @@ exports.signRefreshToken = userId => {
 }
 
 function getToken (headers) {
-  const [bearer, token] = headers?.['access-token']?.split(' ') || []
+  const [bearer, token] = headers?.authorization?.split(' ') || []
   if (token && ['Bearer', 'bearer'].includes(bearer)) return token
   throw createHttpError.Unauthorized('Please Login to Your Account!')
 }

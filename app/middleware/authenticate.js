@@ -5,7 +5,7 @@ const { verifyAccessToken } = require('../utils/functions')
 
 exports.authenticated = async (req, res, next) => {
   try {
-    const authHeader = req?.headers?.['access-token']
+    const authHeader = req?.headers?.['authorization']
     if (!authHeader)
       throw {
         status: 401,

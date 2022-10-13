@@ -19,7 +19,7 @@ router.use(
   require('./admin/admin.routes')
 )
 router.use('/developer', require('./developer.routes'))
-router.use('/blogs', require('./prisma-api/blog.api'))
+
 router.use('/', require('./api/index'))
 
 module.exports = router
