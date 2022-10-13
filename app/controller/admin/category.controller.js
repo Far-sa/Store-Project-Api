@@ -4,7 +4,8 @@ const mongoose = require('mongoose')
 const Category = require('../../models/category')
 const createHttpError = require('http-errors')
 const {
-  addCategorySchema
+  addCategorySchema,
+  updateCategorySchema
 } = require('../../validation/admin/categoryValidation')
 const { result, $_validate } = require('@hapi/joi/lib/base')
 
@@ -48,10 +49,26 @@ class CategoryController extends Controller {
       next(err)
     }
   }
-  async updateCategory (req, res, next) {
+  async editCategoryTitle (req, res, next) {
     try {
-    } catch (err) {
-      next(err)
+      const { id } = req.params
+      const { title } = req.body
+      await updateCategorySchema.validateAsync(req.body)
+      const category = await this.checkExistCategory(id)
+      const resultOfUpdate = await Category.updateOne(
+        { _id: id },
+        { $set: { title } }
+      )
+      if (resultOfUpdate.modifiedCount == 0)
+        throw createError.InternalServerError('Update Failed')
+      return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        data: {
+          message: 'Update was successfully Done. '
+        }
+      })
+    } catch (error) {
+      next(error)
     }
   }
   async getAllCategory (req, res, next) {
@@ -174,6 +191,11 @@ class CategoryController extends Controller {
       console.log(err.message)
       next(err)
     }
+  }
+  async checkExistCategory (id) {
+    const category = await CategoryModel.findById(id)
+    if (!category) throw createError.NotFound('Category not found!')
+    return category
   }
 }
 

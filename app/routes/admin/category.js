@@ -124,4 +124,32 @@ router.delete('/remove/:id', CategoryController.removeCategory)
  */
 router.get('/:id', CategoryController.getCategoryById)
 
+/**
+ * @swagger
+ *  /admin/category/update/{id}:
+ *      patch:
+ *          tags: [Category(AdminPanel)]
+ *          summary: edit or update category title with object id
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  type: string
+ *                  required : true
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Category'
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Category'
+ *          responses:
+ *              200:
+ *                  description: success
+ *              500:
+ *                  description: internalServerError
+ */
+router.patch('/update/:id', CategoryController.editCategoryTitle)
+
 module.exports = router
