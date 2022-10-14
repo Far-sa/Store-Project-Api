@@ -35,7 +35,7 @@ class BlogController extends Controller {
       })
     } catch (err) {
       //? for deleting image file for any reason
-      deleteFileInAddress(image)
+      deleteFileInAddress(req.body.image)
       next(err)
     }
   }

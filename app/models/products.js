@@ -7,14 +7,14 @@ const ProductSchema = new mongoose.Schema({
   short_text: { type: String, required: true },
   text: { type: String, required: true },
   images: { type: [String], required: true },
-  type: { type: String, required: true }, //virtual -physical
+  type: { type: String }, //virtual -physical
   tags: { type: [String], default: [] },
   format: { type: String },
   price: { type: Number, default: 0 },
   discount: { type: Number, default: 0 },
   count: { type: Number },
   comments: { type: [commentSchema], default: [] },
-  category: { type: mongoose.Types.ObjectId, ref: 'category', required: true },
+  category: { type: mongoose.Types.ObjectId, ref: 'category' },
   supplier: { type: mongoose.Types.ObjectId },
   likes: { type: [mongoose.Types.ObjectId], default: [] },
   dislikes: { type: [mongoose.Types.ObjectId], default: [] },

@@ -4,8 +4,9 @@ const morgan = require('morgan')
 const createError = require('http-errors')
 const path = require('path')
 const cors = require('cors')
-const swaggerUi = require('swagger-ui-express')
+const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
+//const bodyParser = require('body-parser')
 
 module.exports = class Application {
   #app = express()
@@ -27,18 +28,19 @@ module.exports = class Application {
     this.#app.use(cors())
     this.#app.use(morgan('dev'))
     this.#app.use(express.json())
+    //this.#app.use(bodyParser.urlencoded({ extended: false }))
     this.#app.use(express.urlencoded({ extended: true }))
     this.#app.use(express.static(path.join(__dirname, '..', 'public')))
     this.#app.use(
-      '/api-docs',
-      swaggerUi.serve,
-      swaggerUi.setup(
+      '/api-doc',
+      swaggerUI.serve,
+      swaggerUI.setup(
         swaggerJsDoc({
-          definition: {
+          swaggerDefinition: {
             openapi: '3.0.0',
             info: {
               title: 'I-paint',
-              version: '2.0.0',
+              version: '1.0.0',
               description:
                 'This is a simple CRUD API application made with Express and documented with Swagger',
               license: {
@@ -52,7 +54,7 @@ module.exports = class Application {
             },
             servers: [
               {
-                url: 'http://localhost:4000'
+                url: 'http://localhost:5000'
               }
             ],
             components: {
@@ -64,7 +66,7 @@ module.exports = class Application {
                 }
               }
             },
-            security: [{ BearerAuth: [] }, {}]
+            security: [{ BearerAuth: [] }]
           },
           apis: ['./app/routes/**/*.js']
         }),

@@ -35,7 +35,7 @@ const router = express.Router()
  *                      description: the list of tags for example(tag1#tag2#tag_foo)
  *                  category:
  *                      type: string
- *                      description: the id of category for foreinField in blog
+ *                      description: the id of category for foreignField in blog
  *                  image:
  *                      type: file
  *                      description: the index picture of blog
@@ -56,7 +56,7 @@ const router = express.Router()
  *                      description: the list of tags for example(tag1#tag2#tag_foo)
  *                  category:
  *                      type: string
- *                      description: the id of category for foreinField in blog
+ *                      description: the id of category for foreign Field in blog
  *                  image:
  *                      type: file
  *                      description: the index picture of blog
@@ -156,7 +156,6 @@ router.delete('/:id', BlogController.getBlogById)
  */
 router.patch(
   '/update/:id',
-  verifyAccessToken,
   uploadFile.single('image'),
   stringToArray('tags'),
   BlogController.updateBlogById

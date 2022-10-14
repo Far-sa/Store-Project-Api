@@ -1,4 +1,5 @@
 const express = require('express')
+const { setHeaders } = require('../middleware/Cors')
 const { verifyAccessToken, checkRole } = require('../utils/functions')
 const redisClient = require('../utils/redis')
 
