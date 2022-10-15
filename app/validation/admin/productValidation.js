@@ -39,6 +39,7 @@ exports.ProductSchema = Joi.object({
     .pattern(MongoIDPattern)
     .error(createHttpError.BadRequest('Category was not found ')),
   tags: Joi.array().required(),
+  type: Joi.string().regex(/(virtual|physical)/i),
   filename: Joi.string()
     .regex(/(\.png|\.jpg|\.webp|\.jpeg|\.gif)$/)
     .error(createHttpError.BadRequest('Enter a valid filename/format')),

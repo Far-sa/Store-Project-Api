@@ -2,7 +2,7 @@ const path = require('path')
 
 const { ProductSchema } = require('../../validation/admin/productValidation')
 
-const { deleteFileInAddress } = require('../../utils/functions')
+const { deleteFileInAddress, setFeatures } = require('../../utils/functions')
 const Controller = require('../controller')
 
 const Product = require('../../models/products')
@@ -12,8 +12,12 @@ class ProductController extends Controller {
     try {
       const productBody = await ProductSchema.validateAsync(req.body)
       //? join address+filename to Save image on DB
-      req.body.image = path.join(req.body.fileUploadPath, req.body.filename)
+      req.body.image = path.join(
+        productBody.fileUploadPath,
+        productBody.filename
+      )
       const image = req.body.image
+
       const {
         title,
         text,
@@ -22,8 +26,11 @@ class ProductController extends Controller {
         tags,
         count,
         price,
-        discount
+        discount,
+        type
       } = productBody
+
+      let features = setFeatures(req.body)
       const supplier = req.user._id
 
       const product = await Product.create({
@@ -35,10 +42,16 @@ class ProductController extends Controller {
         discount,
         category,
         tags,
-        supplier
+        image,
+        supplier,
+        type,
+        features
       })
       return res.status(201).json({
-        statusCod: 201
+        data: {
+          statusCod: 201,
+          message: 'Product has been added successfully'
+        }
       })
     } catch (err) {
       console.log(err.message)
@@ -61,6 +74,13 @@ class ProductController extends Controller {
   }
   async getAllProduct (req, res, next) {
     try {
+      const products = await Product.find({})
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          products
+        }
+      })
     } catch (err) {
       next(err)
     }

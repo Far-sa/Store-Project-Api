@@ -61,6 +61,9 @@ const { uploadFile } = require('../../utils/multer')
  *                      description: the length of product packet
  *                   image :
  *                      type: file
+ *                   type:
+ *                      type: string
+ *                      description: the type of product
  *
  *
  *
@@ -89,5 +92,18 @@ router.post(
   stringToArray('tags'),
   ProductsController.addProduct
 )
+
+/**
+ * @swagger
+ *  /admin/products/list:
+ *      get:
+ *          tags: [Product(AdminPanel)]
+ *          summary: Get all  Products
+ *          responses:
+ *              200:
+ *                  description: success
+ */
+
+router.get('/list', ProductsController.getAllProduct)
 
 module.exports = router
