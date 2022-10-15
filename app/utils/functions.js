@@ -130,3 +130,12 @@ exports.setFeatures = body => {
   }
   return features
 }
+
+//* req.body.image.replace(/\\/g,"/")
+exports.imagesListFromRQ = (files, fileUploadPath) => {
+  if (files?.length > 0) {
+    return files.map(file => path.join(fileUploadPath, file.filename))
+  } else {
+    return []
+  }
+}

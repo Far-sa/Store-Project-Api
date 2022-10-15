@@ -21,7 +21,7 @@ const { uploadFile } = require('../../utils/multer')
  *                   -   discount
  *                   -   count
  *                   -   tags
- *                   -   image
+ *                   -   images
  *                properties:
  *                   title:
  *                      type: string
@@ -59,8 +59,11 @@ const { uploadFile } = require('../../utils/multer')
  *                   length:
  *                      type: number
  *                      description: the length of product packet
- *                   image :
- *                      type: file
+ *                   images :
+ *                      type: array
+ *                      items :
+ *                           type : string
+ *                           format : binary
  *                   type:
  *                      type: string
  *                      description: the type of product
@@ -88,7 +91,7 @@ const { uploadFile } = require('../../utils/multer')
 
 router.post(
   '/add',
-  uploadFile.single('image'),
+  uploadFile.array('images', 10),
   stringToArray('tags'),
   ProductsController.addProduct
 )

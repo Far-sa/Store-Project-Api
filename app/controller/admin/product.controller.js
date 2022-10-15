@@ -2,7 +2,11 @@ const path = require('path')
 
 const { ProductSchema } = require('../../validation/admin/productValidation')
 
-const { deleteFileInAddress, setFeatures } = require('../../utils/functions')
+const {
+  deleteFileInAddress,
+  setFeatures,
+  imagesListFromRQ
+} = require('../../utils/functions')
 const Controller = require('../controller')
 
 const Product = require('../../models/products')
@@ -10,13 +14,10 @@ const Product = require('../../models/products')
 class ProductController extends Controller {
   async addProduct (req, res, next) {
     try {
+      //? import Log
+      //return console.log(req.body.fileUploadPath, req.files)
+      const images = imagesListFromRQ(req?.files || [], req.body.fileUploadPath)
       const productBody = await ProductSchema.validateAsync(req.body)
-      //? join address+filename to Save image on DB
-      req.body.image = path.join(
-        productBody.fileUploadPath,
-        productBody.filename
-      )
-      const image = req.body.image
 
       const {
         title,
@@ -42,7 +43,7 @@ class ProductController extends Controller {
         discount,
         category,
         tags,
-        image,
+        images,
         supplier,
         type,
         features
