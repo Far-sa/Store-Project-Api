@@ -10,6 +10,8 @@ const {
 const Controller = require('../controller')
 
 const Product = require('../../models/products')
+const objectIdValidator = require('../../validation/publicValidator')
+const createHttpError = require('http-errors')
 
 class ProductController extends Controller {
   async addProduct (req, res, next) {
@@ -88,9 +90,23 @@ class ProductController extends Controller {
   }
   async getSingleProduct (req, res, next) {
     try {
+      const { id } = req.params
+      const product = await this.findProductById(id)
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          product
+        }
+      })
     } catch (err) {
       next(err)
     }
+  }
+  async findProductById (productId) {
+    const { id } = await objectIdValidator.validateAsync({ id: productId })
+    const product = await Product.findById(id)
+    if (!product) throw createHttpError.NotFound('Product was not found')
+    return product
   }
 }
 

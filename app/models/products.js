@@ -19,8 +19,8 @@ const ProductSchema = new mongoose.Schema({
   likes: { type: [mongoose.Types.ObjectId], default: [] },
   dislikes: { type: [mongoose.Types.ObjectId], default: [] },
   bookmarks: { type: [mongoose.Types.ObjectId], default: [] },
-  details: {
-    type: {},
+  features: {
+    type: Object,
     default: {
       length: '',
       height: '',
@@ -28,7 +28,7 @@ const ProductSchema = new mongoose.Schema({
       weight: '',
       originally: '',
       colors: [],
-      models: []
+      madein: ''
     }
   }
 })

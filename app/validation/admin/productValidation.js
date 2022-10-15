@@ -23,6 +23,10 @@ exports.ProductSchema = Joi.object({
   discount: Joi.number().error(
     createHttpError.BadRequest('Please Enter a valid discount format')
   ),
+  colors: Joi.array()
+    .min(0)
+    .max(20)
+    .required(),
   weight: Joi.number()
     .allow(null, 0, '0')
     .error(createHttpError.BadRequest('')),

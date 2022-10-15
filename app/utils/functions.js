@@ -114,10 +114,11 @@ exports.deleteFileInAddress = fileAddress => {
   }
 }
 
+// ust + to make str to number
 exports.setFeatures = body => {
   const { colors, width, weight, height, length } = body
   let features = {}
-  //features.colors = colors
+  features.colors = colors
   if (!isNaN(+width) || !isNaN(+height) || !isNaN(+weight) || !isNaN(+length)) {
     if (!width) features.width = 0
     else features.width = +width

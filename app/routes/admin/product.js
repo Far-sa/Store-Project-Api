@@ -10,6 +10,25 @@ const { uploadFile } = require('../../utils/multer')
  * @swagger
  *  components:
  *      schemas:
+ *          Color:
+ *              type: array
+ *              items:
+ *                  type: string
+ *                  enum:
+ *                      -   black
+ *                      -   white
+ *                      -   gray
+ *                      -   red
+ *                      -   blue
+ *                      -   green
+ *                      -   orange
+ *                      -   purple
+ */
+
+/**
+ * @swagger
+ *  components:
+ *      schemas:
  *          Product:
  *                type: object
  *                required:
@@ -67,9 +86,8 @@ const { uploadFile } = require('../../utils/multer')
  *                   type:
  *                      type: string
  *                      description: the type of product
- *
- *
- *
+ *                   colors:
+ *                      $ref: '#/components/schemas/Color'
  */
 
 /**
@@ -88,11 +106,10 @@ const { uploadFile } = require('../../utils/multer')
  *              201:
  *                  description: created new product
  */
-
 router.post(
   '/add',
   uploadFile.array('images', 10),
-  stringToArray('tags'),
+  stringToArray('tags', 'colors'),
   ProductsController.addProduct
 )
 
@@ -106,7 +123,23 @@ router.post(
  *              200:
  *                  description: success
  */
-
 router.get('/list', ProductsController.getAllProduct)
+
+/**
+ * @swagger
+ *  /admin/products/{id}:
+ *      get:
+ *          tags: [Product(AdminPanel)]
+ *          summary: Get all  Products
+ *          parameters :
+ *              -    in: path
+ *                   name : id
+ *                   type : string
+ *                   description : object id of product
+ *          responses:
+ *              200:
+ *                  description: success
+ */
+router.get('/:id', ProductsController.getSingleProduct)
 
 module.exports = router
