@@ -69,8 +69,19 @@ class ProductController extends Controller {
       next(err)
     }
   }
-  async removeProduct (req, res, next) {
+  async removeProductById (req, res, next) {
     try {
+      const { id } = req.params
+      const product = await this.findProductById(id)
+      const removeResult = await Product.deleteOne({ id: product._id })
+      if (removeResult.deletedCount == 0)
+        throw createHttpError.InternalServerError('deleting process failed')
+      return res.status(200).json({
+        data: {
+          statusCode: 200,
+          message: 'Product has been deleted successfully'
+        }
+      })
     } catch (err) {
       next(err)
     }

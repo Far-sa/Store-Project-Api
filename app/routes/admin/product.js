@@ -6,6 +6,7 @@ const {
 const { stringToArray } = require('../../middleware/stringToArray')
 const { uploadFile } = require('../../utils/multer')
 
+//? Color's Schema
 /**
  * @swagger
  *  components:
@@ -25,6 +26,7 @@ const { uploadFile } = require('../../utils/multer')
  *                      -   purple
  */
 
+//? Main Schema
 /**
  * @swagger
  *  components:
@@ -90,6 +92,7 @@ const { uploadFile } = require('../../utils/multer')
  *                      $ref: '#/components/schemas/Color'
  */
 
+//? Post/Create product
 /**
  * @swagger
  *  /admin/products/add:
@@ -113,6 +116,7 @@ router.post(
   ProductsController.addProduct
 )
 
+//? Get List Products
 /**
  * @swagger
  *  /admin/products/list:
@@ -125,12 +129,13 @@ router.post(
  */
 router.get('/list', ProductsController.getAllProduct)
 
+//? Get Single Product
 /**
  * @swagger
  *  /admin/products/{id}:
  *      get:
  *          tags: [Product(AdminPanel)]
- *          summary: Get all  Products
+ *          summary: Get a Product
  *          parameters :
  *              -    in: path
  *                   name : id
@@ -141,5 +146,23 @@ router.get('/list', ProductsController.getAllProduct)
  *                  description: success
  */
 router.get('/:id', ProductsController.getSingleProduct)
+
+//? Delete Single Product
+/**
+ * @swagger
+ *  /admin/products/remove/{id}:
+ *      delete:
+ *          tags: [Product(AdminPanel)]
+ *          summary: Delete a Product
+ *          parameters :
+ *              -    in: path
+ *                   name : id
+ *                   type : string
+ *                   description : object id of product
+ *          responses:
+ *              200:
+ *                  description: success
+ */
+router.delete('/remove/:id', ProductsController.removeProductById)
 
 module.exports = router
