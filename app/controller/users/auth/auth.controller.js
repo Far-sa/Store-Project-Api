@@ -1,4 +1,5 @@
 const createHttpError = require('http-errors')
+const { StatusCodes: HttpStatus } = require('http-status-codes')
 
 const User = require('../../../models/users')
 const {
@@ -22,9 +23,9 @@ class UserAuthController extends Controller {
       const code = randomNumberGenerator()
       const result = await this.saveUser(mobile, code)
       if (!result) throw createHttpError.Unauthorized('Login failed')
-      res.status(200).json({
+      res.status(HttpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: HttpStatus.OK,
           message: 'Evaluation Code was sent successfully.',
           code,
           mobile
@@ -87,7 +88,7 @@ class UserAuthController extends Controller {
   async saveUser (mobile, code) {
     let otp = {
       code,
-      expiresIn: new Date().getTime() + 120000
+      expiresIn: new Date().getTime() + 1000
     }
     const result = await this.checkUserExist(mobile)
     if (result) {
@@ -114,7 +115,7 @@ class UserAuthController extends Controller {
   async register (req, res, next) {
     try {
       const result = await authSchema.validateAsync(req.body)
-      result.status(200).send('Hey Puppet')
+      result.status(HttpStatus.OK).send('Hey Puppet')
     } catch (err) {
       next(err)
     }

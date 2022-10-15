@@ -1,6 +1,7 @@
-const Controller = require('../controller')
 const mongoose = require('mongoose')
+const { StatusCodes: HttpStatus } = require('http-status-codes')
 
+const Controller = require('../controller')
 const Category = require('../../models/category')
 const createHttpError = require('http-errors')
 const {
@@ -17,9 +18,9 @@ class CategoryController extends Controller {
       const category = await Category.create({ title, parent })
       if (!category)
         throw createHttpError.InternalServerError('Internal Server Error')
-      return res.status(201).json({
+      return res.status(HttpStatus.CREATED).json({
         data: {
-          statusCode: 201,
+          statusCode: HttpStatus.CREATED,
           message: 'Category has been created successfully'
         }
       })
@@ -39,9 +40,9 @@ class CategoryController extends Controller {
 
       if (result.deletedCount == 0)
         throw createHttpError.InternalServerError('Server Error')
-      return res.status(200).json({
+      return res.status(HttpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: HttpStatus.OK,
           message: 'Category deleted successfully'
         }
       })
@@ -120,9 +121,9 @@ class CategoryController extends Controller {
       // ])
       const categories = await Category.find({ parent: undefined })
 
-      return res.status(200).json({
+      return res.status(HttpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: HttpStatus.OK,
           categories
         }
       })
@@ -156,9 +157,9 @@ class CategoryController extends Controller {
           }
         }
       ])
-      return res.status(200).json({
+      return res.status(HttpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: HttpStatus.OK,
           category
         }
       })
@@ -169,7 +170,7 @@ class CategoryController extends Controller {
   async getAllParents (req, res, next) {
     try {
       const parents = await Category.find({ parent: undefined }, { __v: 0 })
-      res.status(200).json({
+      res.status(HttpStatus.OK).json({
         data: {
           parents
         }
@@ -182,7 +183,7 @@ class CategoryController extends Controller {
     try {
       const { parent } = req.params
       const children = await Category.find({ parent })
-      return res.status(200).json({
+      return res.status(HttpStatus.OK).json({
         data: {
           children
         }

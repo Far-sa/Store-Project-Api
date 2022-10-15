@@ -1,9 +1,11 @@
+const path = require('path')
+const { StatusCodes: HttpStatus } = require('http-status-codes')
+const createHttpError = require('http-errors')
+
 const { createBlogSchema } = require('../../validation/admin/blogValidation')
 const Controller = require('../controller')
-const path = require('path')
 const Blog = require('../../models/blogs')
 const { deleteFileInAddress } = require('../../utils/functions')
-const createHttpError = require('http-errors')
 
 class BlogController extends Controller {
   async createBlog (req, res, next) {
@@ -27,9 +29,9 @@ class BlogController extends Controller {
         category,
         author
       })
-      return res.status(201).json({
+      return res.status(HttpStatus.CREATED).json({
         data: {
-          statusCode: 201,
+          statusCode: HttpStatus.CREATED,
           message: 'Blog has been created successfully'
         }
       })
@@ -76,9 +78,9 @@ class BlogController extends Controller {
           }
         }
       ])
-      return res.status(200).json({
+      return res.status(HttpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: HttpStatus.OK,
           blogs
         }
       })
@@ -95,9 +97,9 @@ class BlogController extends Controller {
       const result = await Blog.deleteOne({ _id: id })
       if (result.deletedCount == 0)
         throw createHttpError.InternalServerError('deleting process failed')
-      return res.status(200).json({
+      return res.status(HttpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: HttpStatus.OK,
           message: 'Blog has been deleted'
         }
       })
@@ -136,9 +138,9 @@ class BlogController extends Controller {
       const result = await Blog.updateOne({ _id: id }, { $set: data })
       if (result.modifiedCount == 0)
         throw createHttpError.InternalServerError('Update process failed')
-      return res.status(200).json({
+      return res.status(HttpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: HttpStatus.OK,
           message: 'update process was done successfully'
         }
       })
@@ -160,9 +162,9 @@ class BlogController extends Controller {
       // ])
 
       if (!blog) throw createHttpError.NotFound('Blog not found!')
-      return res.status(200).json({
+      return res.status(HttpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: HttpStatus.OK,
           blog
         }
       })

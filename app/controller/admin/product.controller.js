@@ -1,4 +1,5 @@
 const path = require('path')
+const { StatusCodes: HttpStatus } = require('http-status-codes')
 
 const { ProductSchema } = require('../../validation/admin/productValidation')
 
@@ -50,9 +51,9 @@ class ProductController extends Controller {
         type,
         features
       })
-      return res.status(201).json({
+      return res.status(HttpStatus.CREATED).json({
         data: {
-          statusCod: 201,
+          statusCod: HttpStatus.CREATED,
           message: 'Product has been added successfully'
         }
       })
@@ -76,9 +77,9 @@ class ProductController extends Controller {
       const removeResult = await Product.deleteOne({ id: product._id })
       if (removeResult.deletedCount == 0)
         throw createHttpError.InternalServerError('deleting process failed')
-      return res.status(200).json({
+      return res.status(HttpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: HttpStatus.OK,
           message: 'Product has been deleted successfully'
         }
       })
@@ -89,9 +90,9 @@ class ProductController extends Controller {
   async getAllProduct (req, res, next) {
     try {
       const products = await Product.find({})
-      return res.status(200).json({
+      return res.status(HttpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: HttpStatus.OK,
           products
         }
       })
@@ -103,9 +104,9 @@ class ProductController extends Controller {
     try {
       const { id } = req.params
       const product = await this.findProductById(id)
-      return res.status(200).json({
+      return res.status(HttpStatus.OK).json({
         data: {
-          statusCode: 200,
+          statusCode: HttpStatus.OK,
           product
         }
       })
