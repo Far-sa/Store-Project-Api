@@ -46,9 +46,10 @@ class UserAuthController extends Controller {
       if (user.otp.code != code)
         throw createHttpError.Unauthorized('you sent a wrong code')
 
-      const now = Date.now()
+      const now = new Date().getTime()
+      console.log('first', now)
       if (+user.otp.expiresIn < now)
-        throw createHttpError.Unauthorized('You code has been expired')
+        throw createHttpError.Unauthorized('Your code has been expired')
 
       const accessToken = await signAccessToken(user._id)
       const refreshToken = await signRefreshToken(user._id)
@@ -88,7 +89,7 @@ class UserAuthController extends Controller {
   async saveUser (mobile, code) {
     let otp = {
       code,
-      expiresIn: new Date().getTime() + 1000
+      expiresIn: new Date().getTime() + 120000
     }
     const result = await this.checkUserExist(mobile)
     if (result) {

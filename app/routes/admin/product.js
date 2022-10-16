@@ -92,6 +92,62 @@ const { uploadFile } = require('../../utils/multer')
  *                      $ref: '#/components/schemas/Color'
  */
 
+//? Main Schema/ Edit-Product
+/**
+ * @swagger
+ *  components:
+ *      schemas:
+ *          Edit-Product:
+ *                type: object
+ *                properties:
+ *                   title:
+ *                      type: string
+ *                      description: the title of product
+ *                   short_text:
+ *                      type: string
+ *                      description: the title of product
+ *                   text:
+ *                      type: string
+ *                      description: the title of product
+ *                   category:
+ *                      type: string
+ *                      description: the ID of product
+ *                   tags:
+ *                      type: array
+ *                      description: the title of product
+ *                   price:
+ *                      type: number
+ *                      description: the title of product
+ *                   discount:
+ *                      type: number
+ *                      description: the title of product
+ *                   count:
+ *                      type: number
+ *                      description: the title of product
+ *                   height:
+ *                      type: number
+ *                      description: the height of product packet
+ *                   weight:
+ *                      type: number
+ *                      description: the weight of product packet
+ *                   width:
+ *                      type: number
+ *                      description: the with of product packet
+ *                   length:
+ *                      type: number
+ *                      description: the length of product packet
+ *                   images :
+ *                      type: array
+ *                      items :
+ *                           type : string
+ *                           format : binary
+ *                   type:
+ *                      type: string
+ *                      description: the type of product
+ *                   colors:
+ *                      $ref: '#/components/schemas/Color'
+ */
+
 //? Post/Create product
 /**
  * @swagger
@@ -123,6 +179,11 @@ router.post(
  *      get:
  *          tags: [Product(AdminPanel)]
  *          summary: Get all  Products
+ *          parameters :
+ *               -   in : query
+ *                   name: search
+ *                   type: string
+ *                   description: search by query(text,title)
  *          responses:
  *              200:
  *                  description: success
@@ -164,5 +225,35 @@ router.get('/:id', ProductsController.getSingleProduct)
  *                  description: success
  */
 router.delete('/remove/:id', ProductsController.removeProductById)
+
+//? Update/Edit product
+/**
+ * @swagger
+ *  /admin/products/edit/{id}:
+ *      patch:
+ *          tags: [Product(AdminPanel)]
+ *          summary: Update Product info
+ *          parameters:
+ *               -    in : path
+ *                    name : id
+ *                    required : true
+ *                    type : string
+ *                    description : ObjectId of product
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Edit-Product'
+ *          responses:
+ *              200:
+ *                  description: product Updated- Success
+ */
+router.patch(
+  '/edit/:id',
+  uploadFile.array('images', 10),
+  stringToArray('tags', 'colors'),
+  ProductsController.editProduct
+)
 
 module.exports = router

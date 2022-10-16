@@ -89,7 +89,17 @@ class ProductController extends Controller {
   }
   async getAllProduct (req, res, next) {
     try {
-      const products = await Product.find({})
+      const search = req.query.search
+      let products
+      if (search) {
+        products = await Product.find({
+          $text: {
+            $search: search
+          }
+        })
+      } else {
+        products = await Product.find({})
+      }
       return res.status(HttpStatus.OK).json({
         data: {
           statusCode: HttpStatus.OK,
