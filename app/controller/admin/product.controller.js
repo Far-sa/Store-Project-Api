@@ -1,4 +1,3 @@
-const path = require('path')
 const { StatusCodes: HttpStatus } = require('http-status-codes')
 
 const { ProductSchema } = require('../../validation/admin/productValidation')
@@ -6,13 +5,29 @@ const { ProductSchema } = require('../../validation/admin/productValidation')
 const {
   deleteFileInAddress,
   setFeatures,
-  imagesListFromRQ
+  imagesListFromRQ,
+  copyObject,
+  deleteInvalidFieldsInObject
 } = require('../../utils/functions')
 const Controller = require('../controller')
 
 const Product = require('../../models/products')
 const objectIdValidator = require('../../validation/publicValidator')
 const createHttpError = require('http-errors')
+
+const ProductBlackList = {
+  BOOKMARKS: 'bookmarks',
+  LIKES: 'likes',
+  DISLIKES: 'dislikes',
+  COMMENTS: 'comments',
+  SUPPLIER: 'supplier',
+  WEIGHT: 'weight',
+  WIDTH: 'width',
+  LENGTH: 'length',
+  HEIGHT: 'height',
+  COLORS: 'colors'
+}
+Object.freeze(ProductBlackList)
 
 class ProductController extends Controller {
   async addProduct (req, res, next) {
@@ -66,7 +81,28 @@ class ProductController extends Controller {
   }
   async editProduct (req, res, next) {
     try {
+      const { id } = req.params
+      const product = await this.findProductById(id)
+
+      const data = copyObject(req.body)
+      data.images = imagesListFromRQ(req?.files || [], req.body.fileUploadPath)
+      data.features = setFeatures(req.body)
+
+      let blockListData = Object.values(ProductBlackList)
+      deleteInvalidFieldsInObject(data, blockListData)
+
+      const updatedResult = await Product.updateOne(
+        { _id: product._id },
+        { $set: data }
+      )
+      if (updatedResult.modifiedCount == 0)
+        throw HttpStatus.INTERNAL_SERVER_ERROR('Internal Server Error')
+      return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        message: 'Product updated successfully'
+      })
     } catch (err) {
+      console.log(err)
       next(err)
     }
   }

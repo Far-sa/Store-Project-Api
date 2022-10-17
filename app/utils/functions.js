@@ -140,3 +140,20 @@ exports.imagesListFromRQ = (files, fileUploadPath) => {
     return []
   }
 }
+
+exports.deleteInvalidFieldsInObject = (data = {}, blockListData = []) => {
+  //* Object Validation
+  let nullishData = ['', ' ', '0', 0, NaN, null, undefined]
+  Object.keys(data).forEach(key => {
+    if (blockListData.includes(key)) delete data[key]
+    if (typeof data[key] == 'string') data[key] = data[key].trim()
+    if (Array.isArray(data[key]) && data.length > 0)
+      data[key] = data[key].map(item => item.trim())
+    if (Array.isArray(data[key]) && data.length == 0) delete data[key]
+    if (nullishData.includes(key)) delete data[key]
+  })
+}
+
+exports.copyObject = object => {
+  return JSON.parse(JSON.stringify(object))
+}
