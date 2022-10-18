@@ -141,17 +141,18 @@ exports.imagesListFromRQ = (files, fileUploadPath) => {
   }
 }
 
-exports.deleteInvalidFieldsInObject = (data = {}, blockListData = []) => {
+exports.deleteInvalidFieldsInObject = (data = {}, blackListFields = []) => {
   //* Object Validation
-  let nullishData = ['', ' ', '0', 0, NaN, null, undefined]
+  let nullishData = ['', ' ', '0', 0, null, undefined]
   Object.keys(data).forEach(key => {
-    if (blockListData.includes(key)) delete data[key]
+    if (blackListFields.includes(key)) delete data[key]
     if (typeof data[key] == 'string') data[key] = data[key].trim()
-    if (Array.isArray(data[key]) && data.length > 0)
+    if (Array.isArray(data[key]) && data[key].length > 0)
       data[key] = data[key].map(item => item.trim())
-    if (Array.isArray(data[key]) && data.length == 0) delete data[key]
-    if (nullishData.includes(key)) delete data[key]
+    if (Array.isArray(data[key]) && data[key].length == 0) delete data[key]
+    if (nullishData.includes(data[key])) delete data[key]
   })
+  return data
 }
 
 exports.copyObject = object => {

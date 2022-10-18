@@ -31,7 +31,7 @@ const CourseSchema = new mongoose.Schema({
   likes: { type: [mongoose.Types.ObjectId], default: [] },
   dislikes: { type: [mongoose.Types.ObjectId], default: [] },
   bookmarks: { type: [mongoose.Types.ObjectId], default: [] },
-  chapter: { type: [ChapterSchema], default: [] },
+  chapters: { type: [ChapterSchema], default: [] },
   students: { type: [mongoose.Types.ObjectId], ref: 'user', default: [] }
 })
 

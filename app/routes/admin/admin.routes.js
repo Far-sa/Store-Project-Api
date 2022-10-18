@@ -5,6 +5,8 @@ const router = require('express').Router()
  *   tags:
  *       -  name: Admin-Panel
  *          description: Admin Actions (add,  edit, delete, etc.)
+ *       -  name: Course(AdminPanel)
+ *          description: All courses routes (add,  edit, delete , etc .)
  *       -  name : Product(AdminPanel)
  *          description: All Products Route (add,edit,delete ,etc ..)
  *       -  name: Category(AdminPanel)
@@ -16,5 +18,6 @@ const router = require('express').Router()
 router.use('/category', require('./category'))
 router.use('/blogs', require('./blog'))
 router.use('/products', require('./product'))
+router.use('/courses', require('./course'))
 
 module.exports = router

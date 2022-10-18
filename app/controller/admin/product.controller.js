@@ -88,8 +88,8 @@ class ProductController extends Controller {
       data.images = imagesListFromRQ(req?.files || [], req.body.fileUploadPath)
       data.features = setFeatures(req.body)
 
-      let blockListData = Object.values(ProductBlackList)
-      deleteInvalidFieldsInObject(data, blockListData)
+      let blackListFields = Object.values(ProductBlackList)
+      deleteInvalidFieldsInObject(data, blackListFields)
 
       const updatedResult = await Product.updateOne(
         { _id: product._id },
