@@ -37,6 +37,7 @@ class CourseController extends Controller {
         text,
         short_text,
         tags,
+        type,
         category,
         price,
         discount
@@ -47,6 +48,7 @@ class CourseController extends Controller {
         text,
         short_text,
         tags,
+        type,
         category,
         price,
         discount,
@@ -68,6 +70,13 @@ class CourseController extends Controller {
   }
   async getCourseById (req, res, next) {
     try {
+      const { id } = req.params
+      const course = await Course.findById(id)
+      if (!course) throw createHttpError.NotFound('Course not found')
+      return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        course
+      })
     } catch (err) {
       next(err)
     }

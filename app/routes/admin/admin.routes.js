@@ -11,7 +11,7 @@ const router = require('express').Router()
  *          description: All Products Route (add,edit,delete ,etc ..)
  *       -  name: Category(AdminPanel)
  *          description: All Categories Routes (add,  edit, delete, etc.)
- *       -  name: Blogs(AdminPanel)
+ *       -  name: Blog(AdminPanel)
  *          description: All Blogs Routes (add,  edit, delete, etc.)
  */
 
