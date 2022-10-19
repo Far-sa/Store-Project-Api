@@ -23,6 +23,7 @@ const CourseSchema = new mongoose.Schema({
   type: { type: String, required: true, default: 'free' }, // Free/Cash/special
   tags: { type: [String], default: [] },
   time: { type: String, default: '00.00.00' },
+  status: { type: String, default: 'notStarted' }, // started,completed
   price: { type: Number, default: 0 },
   discount: { type: Number, default: 0 },
   comments: { type: [commentSchema], default: [] },
@@ -34,5 +35,7 @@ const CourseSchema = new mongoose.Schema({
   chapters: { type: [ChapterSchema], default: [] },
   students: { type: [mongoose.Types.ObjectId], ref: 'user', default: [] }
 })
+
+CourseSchema.index({ title: 'text', short_text: 'text', text: 'text' })
 
 module.exports = mongoose.model('Course', CourseSchema)
