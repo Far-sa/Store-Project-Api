@@ -156,6 +156,10 @@
  *          responses:
  *              201:
  *                  description: created new product
+ *                  content :
+ *                       application/json:
+ *                              schema:
+ *                                  $ref: '#/definitions/publicDefinition'
  */
 
 //? Get List Products
@@ -207,6 +211,10 @@
  *          responses:
  *              200:
  *                  description: success
+ *                  content :
+ *                       application/json:
+ *                              schema:
+ *                                  $ref: '#/definitions/publicDefinition'
  */
 
 //? Update/Edit product
@@ -231,4 +239,8 @@
  *          responses:
  *              200:
  *                  description: product Updated- Success
+ *                  content :
+ *                       application/json:
+ *                              schema:
+ *                                  $ref: '#/definitions/publicDefinition'
  */

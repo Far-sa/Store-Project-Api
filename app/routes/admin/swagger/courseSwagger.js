@@ -66,6 +66,23 @@
 
 /**
  * @swagger
+ *  definitions:
+ *      publicDefinition:
+ *          type: object
+ *          properties:
+ *              statusCode :
+ *                  type : integer
+ *                  example : 20X
+ *              data:
+ *                  type : object
+ *                  properties:
+ *                       message:
+ *                          type : string
+ *                          example : "The best message for any Action"
+ */
+
+/**
+ * @swagger
  *  components:
  *      schemas:
  *          Insert-Course:
@@ -152,6 +169,10 @@
  *          responses :
  *              201:
  *                  description: success
+ *                  content :
+ *                       application/json:
+ *                              schema:
+ *                                  $ref: '#/definitions/publicDefinition'
  */
 
 //? Get A Single Course
