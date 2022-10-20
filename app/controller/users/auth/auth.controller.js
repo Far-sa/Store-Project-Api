@@ -24,8 +24,8 @@ class UserAuthController extends Controller {
       const result = await this.saveUser(mobile, code)
       if (!result) throw createHttpError.Unauthorized('Login failed')
       res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         data: {
-          statusCode: HttpStatus.OK,
           message: 'Evaluation Code was sent successfully.',
           code,
           mobile
@@ -53,7 +53,8 @@ class UserAuthController extends Controller {
 
       const accessToken = await signAccessToken(user._id)
       const refreshToken = await signRefreshToken(user._id)
-      return res.json({
+      return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         data: {
           accessToken,
           refreshToken,
@@ -72,7 +73,8 @@ class UserAuthController extends Controller {
       const user = await User.findOne({ mobile })
       const accessToken = await signAccessToken(user._id)
       const newRefreshToken = await signRefreshToken(user._id)
-      return res.json({
+      return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         data: {
           accessToken,
           refreshToken: newRefreshToken

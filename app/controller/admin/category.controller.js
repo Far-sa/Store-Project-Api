@@ -21,7 +21,9 @@ class CategoryController extends Controller {
       return res.status(HttpStatus.CREATED).json({
         data: {
           statusCode: HttpStatus.CREATED,
-          message: 'Category has been created successfully'
+          data: {
+            message: 'Category has been created successfully'
+          }
         }
       })
     } catch (err) {
@@ -43,7 +45,9 @@ class CategoryController extends Controller {
       return res.status(HttpStatus.OK).json({
         data: {
           statusCode: HttpStatus.OK,
-          message: 'Category deleted successfully'
+          data: {
+            message: 'Category deleted successfully'
+          }
         }
       })
     } catch (err) {
@@ -122,8 +126,8 @@ class CategoryController extends Controller {
       const categories = await Category.find({ parent: undefined })
 
       return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         data: {
-          statusCode: HttpStatus.OK,
           categories
         }
       })
@@ -158,8 +162,8 @@ class CategoryController extends Controller {
         }
       ])
       return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         data: {
-          statusCode: HttpStatus.OK,
           category
         }
       })
@@ -171,6 +175,7 @@ class CategoryController extends Controller {
     try {
       const parents = await Category.find({ parent: undefined }, { __v: 0 })
       res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         data: {
           parents
         }
@@ -184,6 +189,7 @@ class CategoryController extends Controller {
       const { parent } = req.params
       const children = await Category.find({ parent })
       return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         data: {
           children
         }

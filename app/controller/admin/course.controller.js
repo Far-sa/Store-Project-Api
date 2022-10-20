@@ -20,7 +20,9 @@ class CourseController extends Controller {
       }
       return res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
-        courses
+        data: {
+          courses
+        }
       })
     } catch (err) {
       next(err)
@@ -61,7 +63,9 @@ class CourseController extends Controller {
         throw createHttpError.InternalServerError('Adding Process failed')
       return res.status(HttpStatus.CREATED).json({
         statusCode: HttpStatus.OK,
-        message: 'Course has been added successfully'
+        data: {
+          message: 'Course has been added successfully'
+        }
       })
     } catch (err) {
       console.log(err)
@@ -75,7 +79,9 @@ class CourseController extends Controller {
       if (!course) throw createHttpError.NotFound('Course not found')
       return res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
-        course
+        data: {
+          course
+        }
       })
     } catch (err) {
       next(err)

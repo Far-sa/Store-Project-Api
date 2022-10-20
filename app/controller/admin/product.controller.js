@@ -69,7 +69,9 @@ class ProductController extends Controller {
       return res.status(HttpStatus.CREATED).json({
         data: {
           statusCod: HttpStatus.CREATED,
-          message: 'Product has been added successfully'
+          data: {
+            message: 'Product has been added successfully'
+          }
         }
       })
     } catch (err) {
@@ -99,7 +101,9 @@ class ProductController extends Controller {
         throw HttpStatus.INTERNAL_SERVER_ERROR('Internal Server Error')
       return res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
-        message: 'Product updated successfully'
+        data: {
+          message: 'Product updated successfully'
+        }
       })
     } catch (err) {
       console.log(err)
@@ -116,7 +120,9 @@ class ProductController extends Controller {
       return res.status(HttpStatus.OK).json({
         data: {
           statusCode: HttpStatus.OK,
-          message: 'Product has been deleted successfully'
+          data: {
+            message: 'Product has been deleted successfully'
+          }
         }
       })
     } catch (err) {
@@ -139,7 +145,9 @@ class ProductController extends Controller {
       return res.status(HttpStatus.OK).json({
         data: {
           statusCode: HttpStatus.OK,
-          products
+          data: {
+            products
+          }
         }
       })
     } catch (err) {
@@ -153,7 +161,9 @@ class ProductController extends Controller {
       return res.status(HttpStatus.OK).json({
         data: {
           statusCode: HttpStatus.OK,
-          product
+          data: {
+            product
+          }
         }
       })
     } catch (err) {

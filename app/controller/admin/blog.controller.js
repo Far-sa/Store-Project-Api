@@ -30,8 +30,8 @@ class BlogController extends Controller {
         author
       })
       return res.status(HttpStatus.CREATED).json({
+        statusCode: HttpStatus.CREATED,
         data: {
-          statusCode: HttpStatus.CREATED,
           message: 'Blog has been created successfully'
         }
       })
@@ -79,8 +79,8 @@ class BlogController extends Controller {
         }
       ])
       return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         data: {
-          statusCode: HttpStatus.OK,
           blogs
         }
       })
@@ -98,8 +98,8 @@ class BlogController extends Controller {
       if (result.deletedCount == 0)
         throw createHttpError.InternalServerError('deleting process failed')
       return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         data: {
-          statusCode: HttpStatus.OK,
           message: 'Blog has been deleted'
         }
       })
@@ -139,8 +139,8 @@ class BlogController extends Controller {
       if (result.modifiedCount == 0)
         throw createHttpError.InternalServerError('Update process failed')
       return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         data: {
-          statusCode: HttpStatus.OK,
           message: 'update process was done successfully'
         }
       })
@@ -163,8 +163,8 @@ class BlogController extends Controller {
 
       if (!blog) throw createHttpError.NotFound('Blog not found!')
       return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
         data: {
-          statusCode: HttpStatus.OK,
           blog
         }
       })
