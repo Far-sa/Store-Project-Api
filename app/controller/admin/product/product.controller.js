@@ -1,6 +1,6 @@
 const { StatusCodes: HttpStatus } = require('http-status-codes')
 
-const { ProductSchema } = require('../../validation/admin/productValidation')
+const { ProductSchema } = require('../../../validation/admin/productValidation')
 
 const {
   deleteFileInAddress,
@@ -8,11 +8,11 @@ const {
   imagesListFromRQ,
   copyObject,
   deleteInvalidFieldsInObject
-} = require('../../utils/functions')
-const Controller = require('../controller')
+} = require('../../../utils/functions')
+const Controller = require('../../controller')
 
-const Product = require('../../models/products')
-const objectIdValidator = require('../../validation/publicValidator')
+const Product = require('../../../models/products')
+const objectIdValidator = require('../../../validation/publicValidator')
 const createHttpError = require('http-errors')
 
 const ProductBlackList = {

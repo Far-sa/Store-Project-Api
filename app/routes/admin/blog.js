@@ -1,6 +1,8 @@
 const express = require('express')
 
-const { BlogController } = require('../../controller/admin/blog.controller')
+const {
+  BlogController
+} = require('../../controller/admin/blog/blog.controller')
 const { stringToArray } = require('../../middleware/stringToArray')
 const { uploadFile } = require('../../utils/multer')
 

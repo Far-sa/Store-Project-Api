@@ -2,9 +2,7 @@ const router = require('express').Router()
 
 const {
   CategoryController
-} = require('../../controller/admin/category.controller')
-
-
+} = require('../../controller/admin/category/category.controller')
 
 router.post('/add', CategoryController.addCategory)
 router.get('/parents', CategoryController.getAllParents)

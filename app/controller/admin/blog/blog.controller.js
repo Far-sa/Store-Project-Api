@@ -2,10 +2,10 @@ const path = require('path')
 const { StatusCodes: HttpStatus } = require('http-status-codes')
 const createHttpError = require('http-errors')
 
-const { createBlogSchema } = require('../../validation/admin/blogValidation')
-const Controller = require('../controller')
-const Blog = require('../../models/blogs')
-const { deleteFileInAddress } = require('../../utils/functions')
+const { createBlogSchema } = require('../../../validation/admin/blogValidation')
+const Controller = require('../../controller')
+const Blog = require('../../../models/blogs')
+const { deleteFileInAddress } = require('../../../utils/functions')
 
 class BlogController extends Controller {
   async createBlog (req, res, next) {

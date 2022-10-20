@@ -2,11 +2,9 @@ const router = require('express').Router()
 
 const {
   ProductsController
-} = require('../../controller/admin/product.controller')
+} = require('../../controller/admin/product/product.controller')
 const { stringToArray } = require('../../middleware/stringToArray')
 const { uploadFile } = require('../../utils/multer')
-
-
 
 router.post(
   '/add',

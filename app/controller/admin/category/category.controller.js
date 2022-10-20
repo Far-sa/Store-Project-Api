@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 const { StatusCodes: HttpStatus } = require('http-status-codes')
 
-const Controller = require('../controller')
-const Category = require('../../models/category')
+const Controller = require('../../controller')
+const Category = require('../../../models/category')
 const createHttpError = require('http-errors')
 const {
   addCategorySchema,
   updateCategorySchema
-} = require('../../validation/admin/categoryValidation')
+} = require('../../../validation/admin/categoryValidation')
 const { result, $_validate } = require('@hapi/joi/lib/base')
 
 class CategoryController extends Controller {

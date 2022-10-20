@@ -1,6 +1,8 @@
 const router = require('express').Router()
 
-const { CourseController } = require('../../controller/admin/course.controller')
+const {
+  CourseController
+} = require('../../controller/admin/course/course.controller')
 const { stringToArray } = require('../../middleware/stringToArray')
 const { uploadFile } = require('../../utils/multer')
 
@@ -12,7 +14,5 @@ router.post(
   CourseController.addCourse
 )
 router.get('/:id', CourseController.getCourseById)
-
-router.put('/add-chapter', CourseController.addChapter)
 
 module.exports = router
