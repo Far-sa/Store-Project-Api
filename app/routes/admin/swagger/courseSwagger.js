@@ -1,3 +1,4 @@
+//? Type Component
 /**
  * @swagger
  *  components:
@@ -65,44 +66,13 @@
  *                                      example: "Mack Bill"
  */
 
-//? Public Definition
-/**
- * @swagger
- *  definitions:
- *      publicDefinition:
- *          type: object
- *          properties:
- *              statusCode :
- *                  type : integer
- *                  example : 20X
- *              data:
- *                  type : object
- *                  properties:
- *                       message:
- *                          type : string
- *                          example : "The best message for any Action"
- */
+
 
 //? Main Schemas
 /**
  * @swagger
  *  components:
  *      schemas:
- *          addChapter:
- *              type: object
- *              required :
- *                  -  id
- *                  -  title
- *              properties:
- *                  id :
- *                      type : string
- *                      example :
- *                  title :
- *                      type : string
- *                      example : Chapter 1- async JS
- *                  text :
- *                       type : string
- *                       example : description of chapter
  *          Insert-Course:
  *              type: object
  *              required:
@@ -208,29 +178,4 @@
  *          responses :
  *              200:
  *                  description: success
- */
-
-/**
- * @swagger
- *  /admin/courses/add-chapter:
- *      put:
- *          tags: [Course(AdminPanel)]
- *          summary: add a new Chapter for a course
- *          requestBody:
- *               required : true
- *               content :
- *                   application/x-www-form-urlencoded :
- *                         schema :
- *                              $ref : '#/components/schemas/addChapter'
- *                   application/json:
- *                         schema :
- *                              $ref : '#/components/schemas/addChapter'
- *          responses:
- *                  200 :
- *                      description : success
- *                      content :
- *                          application/json:
- *                              schema :
- *                                  $ref : '#/definitions/publicDefinition'
- *
  */

@@ -4,6 +4,6 @@ const {
   ChapterController
 } = require('../../controller/admin/course/chapter.controller')
 
-router.put('/add-chapter', ChapterController.addChapter)
+router.put('/add', ChapterController.addChapter)
 
 module.exports = router
