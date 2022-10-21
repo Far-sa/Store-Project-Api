@@ -1,3 +1,32 @@
+//? Public Definition
+/**
+ * @swagger
+ *  definitions:
+ *      chaptersOfCourse:
+ *          type: object
+ *          properties:
+ *              statusCode :
+ *                  type : integer
+ *                  example : 20X
+ *              data:
+ *                  type : object
+ *                  properties:
+ *                       course:
+ *                          type : object
+ *                          properties :
+ *                              _id :
+ *                                  type : string
+ *                                  example : fgttf652rgth
+ *                              title :
+ *                                  type : string
+ *                                  example : title
+ *                              chapters :
+ *                                  type : array
+ *                                  items :
+ *                                      type : object
+ *                                  example : [{}]
+ */
+
 //? Main Schema
 /**
  * @swagger
@@ -43,5 +72,27 @@
  *                          application/json:
  *                              schema :
  *                                  $ref : '#/definitions/publicDefinition'
+ *
+ */
+
+//? Chapters of course
+/**
+ * @swagger
+ *  /admin/chapters/list/{CourseID}:
+ *      get:
+ *          tags: [Chapter(AdminPanel)]
+ *          summary: Get Chapters of a course
+ *          parameters :
+ *              -    in: path
+ *                   type : string
+ *                   required: true
+ *                   name : CourseID
+ *          responses:
+ *                  200 :
+ *                      description : success
+ *                      content :
+ *                          application/json:
+ *                              schema :
+ *                                  $ref : '#/definitions/chaptersOfCourse'
  *
  */
