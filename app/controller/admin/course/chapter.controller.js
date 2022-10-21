@@ -50,6 +50,35 @@ class ChapterController extends Controller {
       next(err)
     }
   }
+  async removeChapterById (req, res, next) {
+    try {
+      const { chapterID } = req.params
+      await this.getOneChapter(chapterID)
+      const deletedChapter = await Course.updateOne(
+        { 'chapters._id': chapterID },
+        {
+          $pull: { chapters: { _id: chapterID } }
+        }
+      )
+      if (deletedChapter.modifiedCount == 0)
+        throw createHttpError.InternalServerError('Process Failed')
+      return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        message: 'Chapter has been deleted successfully'
+      })
+    } catch (err) {
+      next(err)
+    }
+  }
+  async getOneChapter (id) {
+    const chapter = await Course.findOne(
+      { 'chapters._id': id },
+      { 'chapters.$': 1 }
+    )
+    if (!chapter)
+      throw createHttpError.NotFound('NO chapter was found with this id')
+    return chapter
+  }
 }
 
 module.exports = {
