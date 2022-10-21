@@ -13,11 +13,21 @@ class CourseController extends Controller {
       const search = req.query.search
       let courses
       if (search) {
-        courses = await Course.find({ $text: { $search: search } }).sort({
-          _id: -1
-        })
+        courses = await Course.find({ $text: { $search: search } })
+          .populate([
+            { path: 'category', select: { title: 1 } },
+            { path: 'teacher', select: { mobile: 1, email: 1, last_name: 1 } }
+          ])
+          .sort({
+            _id: -1
+          })
       } else {
-        courses = await Course.find({}).sort({ _id: -1 })
+        courses = await Course.find({})
+          .populate([
+            { path: 'category', select: { title: 1 } },
+            { path: 'teacher', select: { mobile: 1, email: 1, last_name: 1 } }
+          ])
+          .sort({ _id: -1 })
       }
       return res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
@@ -100,7 +110,6 @@ class CourseController extends Controller {
       next(err)
     }
   }
-  
 
   async findCourseById (id) {
     if (!mongoose.isValidObjectId(id))

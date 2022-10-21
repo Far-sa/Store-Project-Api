@@ -18,7 +18,7 @@ const CategorySchema = new mongoose.Schema(
 )
 
 CategorySchema.virtual('children', {
-  ref: 'Category',
+  ref: 'category',
   localField: '_id',
   foreignField: 'parent'
 })
@@ -30,7 +30,7 @@ function autoPopulate (next) {
 
 CategorySchema.pre('findOne', autoPopulate).pre('find', autoPopulate)
 
-module.exports = mongoose.model('Category', CategorySchema)
+module.exports = mongoose.model('category', CategorySchema)
 
 //Web Developer
 // => Back-End

@@ -30,7 +30,7 @@ const BlogSchema = new mongoose.Schema(
 )
 
 BlogSchema.virtual('user', {
-  ref: 'User',
+  ref: 'user',
   localField: '_id',
   foreignField: 'author'
 })
@@ -41,4 +41,4 @@ BlogSchema.virtual('category_detail', {
   foreignField: 'category'
 })
 
-module.exports = mongoose.model('Blog', BlogSchema)
+module.exports = mongoose.model('blog', BlogSchema)
