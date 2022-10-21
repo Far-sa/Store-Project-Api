@@ -3,6 +3,7 @@ const { StatusCodes: HttpStatus } = require('http-status-codes')
 const { default: mongoose } = require('mongoose')
 
 const Course = require('../../../models/course')
+const { deleteInvalidFieldsInObject } = require('../../../utils/functions')
 const Controller = require('../../controller')
 const { CourseController } = require('./course.controller')
 
@@ -64,7 +65,34 @@ class ChapterController extends Controller {
         throw createHttpError.InternalServerError('Process Failed')
       return res.status(HttpStatus.OK).json({
         statusCode: HttpStatus.OK,
-        message: 'Chapter has been deleted successfully'
+        data: {
+          message: 'Chapter has been deleted successfully'
+        }
+      })
+    } catch (err) {
+      next(err)
+    }
+  }
+  async updateChapterById (req, res, next) {
+    try {
+      const { chapterID } = req.params
+      await this.getOneChapter(chapterID)
+      const data = req.body
+      deleteInvalidFieldsInObject(data, ['_id'])
+
+      const updatedChapter = await Course.updateOne(
+        {
+          'chapters._id': chapterID
+        },
+        { $set: { 'chapters.$': data } }
+      )
+      if (updated.modifiedCount == 0)
+        throw new createHttpError.InternalServerError('Internal Server Error')
+      return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        data: {
+          message: 'Chapter has been updated successfully'
+        }
       })
     } catch (err) {
       next(err)

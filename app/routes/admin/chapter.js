@@ -7,5 +7,6 @@ const {
 router.put('/add', ChapterController.addChapter)
 router.get('/list/:courseID', ChapterController.chaptersOfCOurse)
 router.patch('/remove/:chapterID', ChapterController.removeChapterById)
+router.patch('/update/:chapterID', ChapterController.updateChapterById)
 
 module.exports = router
