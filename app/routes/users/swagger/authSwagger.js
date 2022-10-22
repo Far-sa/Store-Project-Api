@@ -33,20 +33,12 @@
  *                      description: enter refresh-token for get fresh token and refresh-token
  */
 
-//? Create Tags
-/**
- * @swagger
- *  tags:
- *      name : User-Authentication
- *      description : user-auth section
- */
-
 //? Get OTP
 /**
  * @swagger
  *  /user/get-otp:
  *      post:
- *          tags: [User-Authentication]
+ *          tags: [UserAuth(AdminPanel)]
  *          summary: login user in user panel with phone number
  *          description: one time password(OTP) login
  *          requestBody:
@@ -74,7 +66,7 @@
  * @swagger
  *  /user/check-otp:
  *      post:
- *          tags : [User-Authentication]
+ *          tags : [UserAuth(AdminPanel)]
  *          summary: check-otp value in user controller
  *          description: check otp with mobile code and expires date
  *          requestBody:
@@ -102,7 +94,7 @@
  * @swagger
  *  /user/refresh-token:
  *      post:
- *          tags: [User-Authentication]
+ *          tags: [UserAuth(AdminPanel)]
  *          summary: send refresh token for get new token and refresh token
  *          description : fresh token
  *          requestBody:

@@ -31,3 +31,22 @@ exports.CourseSchema = Joi.object({
     .error(createHttpError.BadRequest('Enter a valid filename/format')),
   fileUploadPath: Joi.allow()
 })
+
+exports.EpisodeSchema = Joi.object({
+  title: Joi.string()
+    .min(3)
+    .max(30)
+    .required()
+    .error(createHttpError.BadRequest('Episode title is invalid')),
+  text: Joi.string()
+    .required()
+    .error(createHttpError.BadRequest('Enter a valid text')),
+  type: Joi.string().regex(/(lock|unlock)/i),
+  time: Joi.string().regex(/[0-9]{2}\:[0-9]{2\:[0-9]{2}}/i), // 00:06:45
+  chapterID: Joi.string()
+    .pattern(MongoIDPattern)
+    .error(createHttpError.BadRequest('chapter id is not valid')),
+  courseID: Joi.string()
+    .pattern(MongoIDPattern)
+    .error(createHttpError.BadRequest('Course id is not valid '))
+})
