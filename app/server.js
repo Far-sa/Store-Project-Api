@@ -6,6 +6,9 @@ const path = require('path')
 const cors = require('cors')
 const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
+const dotenv = require('dotenv')
+
+dotenv.config()
 //const bodyParser = require('body-parser')
 
 module.exports = class Application {

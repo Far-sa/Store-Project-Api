@@ -56,12 +56,27 @@ function fileFilter (req, file, cb) {
     createHttpError.BadRequest('Please select an image in correct form')
   )
 }
+function videoFileFilter (req, file, cb) {
+  const ext = path.extname(file.originalname)
+  const mimType = ['.mp4', '.mov', '.mkv', '.mpg', 'avi']
+  if (mimType.includes(ext)) {
+    return cb(null, true)
+  }
+  return cb(createHttpError.BadRequest('Please select a correct form of video'))
+}
 
-const maxSize = 2 * 1000 * 1000
+const imageMaxSize = 1 * 1000 * 1000
+const videoMaxSize = 300 * 1000 * 1000 // 300MB
+
 const uploadFile = multer({
   storage,
   fileFilter,
-  limits: { fileSize: maxSize }
+  limits: { fileSize: imageMaxSize }
+})
+const uploadVideo = multer({
+  storage,
+  videoFileFilter,
+  limits: { fileSize: videoMaxSize }
 })
 
-module.exports = { uploadFile }
+module.exports = { uploadFile, uploadVideo }
