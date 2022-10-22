@@ -38,7 +38,7 @@
  *                      format : binary
  */
 
-//? Add Chapter
+//? Add Episodes
 /**
  * @swagger
  *  /admin/episodes/add:
@@ -51,6 +51,28 @@
  *                   multipart/form-data :
  *                         schema :
  *                              $ref : '#/components/schemas/addEpisode'
+ *          responses:
+ *                  201 :
+ *                      description : success
+ *                      content :
+ *                          application/json:
+ *                              schema :
+ *                                  $ref : '#/definitions/publicDefinition'
+ *
+ */
+
+//? Remove Episodes
+/**
+ * @swagger
+ *  /admin/episodes/remove/{episodesID}:
+ *      delete:
+ *          tags: [Episode(AdminPanel)]
+ *          summary: remove an episode of a course
+ *          parameters:
+ *              -   in : path
+ *                  name: EpisodeID
+ *                  type : string
+ *                  required: true
  *          responses:
  *                  200 :
  *                      description : success

@@ -7,5 +7,6 @@ const {
 } = require('../../controller/admin/course/episode.controller')
 
 router.post('/add', uploadVideo.single('video'), EpisodeController.addEpisode)
+router.delete('/remove/:episodeID', EpisodeController.removeEpisodeById)
 
 module.exports = router
