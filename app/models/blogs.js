@@ -24,7 +24,7 @@ const BlogSchema = new mongoose.Schema(
     timestamps: true,
     versionKey: false,
     toJSON: {
-      virtual: true
+      virtuals: true
     }
   }
 )
@@ -39,6 +39,10 @@ BlogSchema.virtual('category_detail', {
   ref: 'Category',
   localField: '_id',
   foreignField: 'category'
+})
+
+BlogSchema.virtual('imageURL').get(function () {
+  return `${process.env.BASE_URL}:${process.env.APPLICATION_PORT}/${this.image}`
 })
 
 module.exports = mongoose.model('blog', BlogSchema)

@@ -8,7 +8,7 @@ const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
 const dotenv = require('dotenv')
 
-dotenv.config()
+dotenv.config({ path: '../.env' })
 //const bodyParser = require('body-parser')
 
 module.exports = class Application {
