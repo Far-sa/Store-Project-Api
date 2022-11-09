@@ -3,6 +3,8 @@
  *   tags:
  *       -  name: Admin-Panel
  *          description: Admin Actions (add,  edit, delete, etc.)
+ *       -  name: Users(AdminPanel)
+ *          description: All User routes (add,  edit, delete , etc .)
  *       -  name: UserAuth(AdminPanel)
  *          description: All User-Auth routes (add,  edit, delete , etc .)
  *       -  name: Course(AdminPanel)

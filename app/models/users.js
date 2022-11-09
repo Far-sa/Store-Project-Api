@@ -29,4 +29,12 @@ const UserSchema = new mongoose.Schema(
   }
 )
 
+UserSchema.index({
+  first_name: 'text',
+  last_name: 'text',
+  username: 'text',
+  email: 'text',
+  mobile: 'text'
+})
+
 module.exports = mongoose.model('user', UserSchema)

@@ -6,5 +6,6 @@ router.use('/products', require('./product'))
 router.use('/courses', require('./course'))
 router.use('/chapters', require('./chapter'))
 router.use('/episodes', require('./episode'))
+router.use('/users', require('./user'))
 
 module.exports = router
