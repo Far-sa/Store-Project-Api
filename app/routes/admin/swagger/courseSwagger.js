@@ -71,7 +71,7 @@
  * @swagger
  *  components:
  *      schemas:
- *          Insert-Course:
+ *         Insert-Course:
  *              type: object
  *              required:
  *                  -   title
@@ -115,7 +115,7 @@
  *                      format: binary
  *                  type:
  *                      $ref: '#/components/schemas/Types'
- *           Edit-Course:
+ *          Edit-Course:
  *              type: object
  *              properties:
  *                  title:

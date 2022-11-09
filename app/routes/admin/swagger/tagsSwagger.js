@@ -3,6 +3,8 @@
  *   tags:
  *       -  name: Admin-Panel
  *          description: Admin Actions (add,  edit, delete, etc.)
+ *       -  name: RBAC (AdminPanel)
+ *          description: Role-Base-Access-Control for Manage Permissions and roles
  *       -  name: Users(AdminPanel)
  *          description: All User routes (add,  edit, delete , etc .)
  *       -  name: UserAuth(AdminPanel)

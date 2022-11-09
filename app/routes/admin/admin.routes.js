@@ -7,5 +7,7 @@ router.use('/courses', require('./course'))
 router.use('/chapters', require('./chapter'))
 router.use('/episodes', require('./episode'))
 router.use('/users', require('./user'))
+router.use('/role', require('./role'))
+router.use('/permission', require('./permission'))
 
 module.exports = router
