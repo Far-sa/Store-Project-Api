@@ -14,5 +14,10 @@ router.post(
   CourseController.addCourse
 )
 router.get('/:id', CourseController.getCourseById)
+router.patch(
+  '/update/:id',
+  uploadFile.single('image'),
+  CourseController.UpdateCourseById
+)
 
 module.exports = router

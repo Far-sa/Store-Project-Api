@@ -66,8 +66,6 @@
  *                                      example: "Mack Bill"
  */
 
-
-
 //? Main Schemas
 /**
  * @swagger
@@ -84,6 +82,41 @@
  *                  -   price
  *                  -   image
  *                  -   type
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                      description: the title of course
+ *                      example:  Course's title
+ *                  short_text:
+ *                      type: string
+ *                      description: the title of course
+ *                      example: Some info ...
+ *                  text:
+ *                      type: string
+ *                      description: the title of course
+ *                      example: Write your body ..
+ *                  tags:
+ *                      type: array
+ *                      description: the tags of course
+ *                  category:
+ *                      type: string
+ *                      description: the category of course
+ *                      example: 6279e994c1e47a98d0f356d3
+ *                  price:
+ *                      type: string
+ *                      description: the title of course
+ *                      example: 2500000
+ *                  discount:
+ *                      type: string
+ *                      description: the title of course
+ *                      example: 0
+ *                  image:
+ *                      type: string
+ *                      format: binary
+ *                  type:
+ *                      $ref: '#/components/schemas/Types'
+ *           Edit-Course:
+ *              type: object
  *              properties:
  *                  title:
  *                      type: string
@@ -178,4 +211,31 @@
  *          responses :
  *              200:
  *                  description: success
+ */
+
+//? Update Course
+/**
+ * @swagger
+ *  /admin/courses/update/{id}:
+ *     patch:
+ *          tags: [Course(AdminPanel)]
+ *          summary: create and save course
+ *          parameters :
+ *              -   in : path
+ *                  type : string
+ *                  name : id
+ *                  required : true
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Edit-Course'
+ *          responses :
+ *              201:
+ *                  description: success
+ *                  content :
+ *                       application/json:
+ *                              schema:
+ *                                  $ref: '#/definitions/publicDefinition'
  */

@@ -6,6 +6,10 @@ const Course = require('../../../models/course')
 const { CourseSchema } = require('../../../validation/admin/courseValidation')
 const createHttpError = require('http-errors')
 const { default: mongoose } = require('mongoose')
+const {
+  deleteInvalidFieldsInObject,
+  deleteFileInAddress
+} = require('../../../utils/functions')
 
 class CourseController extends Controller {
   async getCourses (req, res, next) {
@@ -106,6 +110,48 @@ class CourseController extends Controller {
   }
   async deleteCourseById (req, res, next) {
     try {
+    } catch (err) {
+      next(err)
+    }
+  }
+  async updateCOurseById (req, res, next) {
+    try {
+      const { id } = req.params
+      const course = await this.findCourseById(id)
+      const data = copyObject(req.body)
+      const { filename, fileUploadPath } = req.body
+      let blackListFields = [
+        'time',
+        'chapters',
+        'episodes',
+        'students',
+        'likes',
+        'bookmarks',
+        'dislikes',
+        'comments',
+        'filename',
+        'fileUploadPath'
+      ]
+      deleteInvalidFieldsInObject(data, blackListFields)
+      if (req.file) {
+        data.image = path.join(fileUploadPath, filename)
+        deleteFileInAddress(course.image)
+      }
+      const updatedResult = await Course.updateOne(
+        { _id: id },
+        {
+          $set: data
+        }
+      )
+      if (!updatedResult.modifiedCount)
+        throw createHttpError.InternalServerError('updating process was failed')
+
+      return res.status(HttpStatus.OK).json({
+        statusCode: HttpStatus.OK,
+        data: {
+          message: 'Course has been updated'
+        }
+      })
     } catch (err) {
       next(err)
     }
